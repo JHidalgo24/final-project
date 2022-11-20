@@ -27,8 +27,8 @@ let AccountScreen = ({navigation}) => {
     return(
 
         <ApplicationProvider {...eva} theme={eva.light}>
-        <SafeAreaView >
-            <ScrollView>
+        <ScrollView nestedScrollEnabled = {true}>
+
                 <View style={styles.containerImage}>
                     <Image  style={styles.avatar} source={require('../assets/avatar.jpg')} ></Image>
                     <Text style={{marginTop:20,marginBottom:5}} category='h4'>User Name</Text>
@@ -62,10 +62,7 @@ let AccountScreen = ({navigation}) => {
                         />
 
                     </Card>
-
-
-            </ScrollView>
-        </SafeAreaView>
+        </ScrollView>
         </ApplicationProvider>
     )
 

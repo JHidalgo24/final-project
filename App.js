@@ -10,7 +10,7 @@ import { AccountScreen } from './components/AccountScreen';
 import { WatchlistScreen } from './components/WatchlistScreen';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
-
+import {MyTabs} from "./components/MyTabs";
 
 
 const Tab = createBottomTabNavigator();
@@ -18,55 +18,7 @@ const Stack = createNativeStackNavigator();
 
 
 
-let  MyTabs = () => {
-    return (
-        <Tab.Navigator style={styles.navigator} screenOptions={{
-            tabBarActiveTintColor: '#68CACA',
-        }}>
-            <Tab.Screen options={{
-                tabBarLabel: 'Home',
-                headerStyle:{
-                    backgroundColor:'#36446E'
-                },
-                headerTintColor:'#FFF'
-                ,
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="home" color={color} size={size} />
-                ),
-            }} name="Home" component={HomeScreen} />
-            <Tab.Screen options={{
-                tabBarLabel: 'Search',headerStyle:{
-                    backgroundColor:'#36446E'
-                },
-                headerTintColor:'#FFF'
-                ,
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="magnify" color={color} size={size} />
-                ),
-            }} name="Search" component={SearchScreen} />
-            <Tab.Screen options={{
-                tabBarLabel: 'My Watchlist',headerStyle:{
-                    backgroundColor:'#36446E'
-                },
-                headerTintColor:'#FFF'
-                ,
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
-                ),
-            }} name="Watchlist" component={WatchlistScreen} />
-            <Tab.Screen options={{
-                tabBarLabel: 'Account',headerStyle:{
-                    backgroundColor:'#36446E'
-                },
-                headerTintColor:'#FFF'
-                ,
-                tabBarIcon: ({ color, size }) => (
-                    <MaterialCommunityIcons name="account" color={color} size={size} />
-                ),
-            }} name="Account" component={AccountScreen} />
-        </Tab.Navigator>
-    );
-}
+
 
 export default function App() {
   return (
