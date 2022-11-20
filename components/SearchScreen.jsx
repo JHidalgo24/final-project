@@ -18,7 +18,6 @@ let SearchScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#D2EFEF',
       alignItems: 'center',
       justifyContent: 'flex-start',
     },

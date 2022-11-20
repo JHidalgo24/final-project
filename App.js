@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, SafeAreaView, View, Button } from 'react-native';
+import {StyleSheet, SafeAreaView, View, Button, ImageBackground} from 'react-native';
 import {HomeScreen} from './components/HomeScreen'
 import { SearchScreen } from './components/SearchScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,52 +8,82 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AccountScreen } from './components/AccountScreen';
 import { WatchlistScreen } from './components/WatchlistScreen';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
+
+let  MyTabs = () => {
+    return (
+        <Tab.Navigator style={styles.navigator} screenOptions={{
+            tabBarActiveTintColor: '#68CACA',
+        }}>
+            <Tab.Screen options={{
+                tabBarLabel: 'Home',
+                headerStyle:{
+                    backgroundColor:'#36446E'
+                },
+                headerTintColor:'#FFF'
+                ,
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="home" color={color} size={size} />
+                ),
+            }} name="Home" component={HomeScreen} />
+            <Tab.Screen options={{
+                tabBarLabel: 'Search',headerStyle:{
+                    backgroundColor:'#36446E'
+                },
+                headerTintColor:'#FFF'
+                ,
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="magnify" color={color} size={size} />
+                ),
+            }} name="Search" component={SearchScreen} />
+            <Tab.Screen options={{
+                tabBarLabel: 'My Watchlist',headerStyle:{
+                    backgroundColor:'#36446E'
+                },
+                headerTintColor:'#FFF'
+                ,
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
+                ),
+            }} name="Watchlist" component={WatchlistScreen} />
+            <Tab.Screen options={{
+                tabBarLabel: 'Account',headerStyle:{
+                    backgroundColor:'#36446E'
+                },
+                headerTintColor:'#FFF'
+                ,
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="account" color={color} size={size} />
+                ),
+            }} name="Account" component={AccountScreen} />
+        </Tab.Navigator>
+    );
+}
+
 export default function App() {
   return (
-    
+
+
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{
-        tabBarActiveTintColor: '#68CACA',
-      }}>
-          <Tab.Screen options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }} name="Home" component={HomeScreen} />
-          <Tab.Screen options={{
-          tabBarLabel: 'Search',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="magnify" color={color} size={size} />
-          ),
-        }} name="Search" component={SearchScreen} />
-        <Tab.Screen options={{
-          tabBarLabel: 'My Watchlist',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
-          ),
-        }} name="Watchlist" component={WatchlistScreen} />
-         <Tab.Screen options={{
-          tabBarLabel: 'Account',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }} name="Account" component={AccountScreen} />
-        </Tab.Navigator>
+      <ApplicationProvider {...eva} theme={eva.light}>
+          <MyTabs></MyTabs>
+      </ApplicationProvider>
     </NavigationContainer>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#59C3C3',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -68,7 +98,9 @@ const styles = StyleSheet.create({
     fontWeight:'900',
     fontSize:'25%',
     fontFamily:'American Typewriter',
-  
-    
-  }
+  },
+    navigator:{
+      backgroundColor:'black',
+        color:'rgb(0,0,0)'
+    }
 });

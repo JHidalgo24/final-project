@@ -1,36 +1,64 @@
-import React from "react"
+import React from 'react'
 
-import { SafeAreaView,ScrollView,Text,Button,View, StyleSheet, Image} from "react-native"
+import {Button, SafeAreaView, View, StyleSheet, ScrollView, Image, ImageBackground, Linking} from "react-native"
+import {ApplicationProvider, Card, Layout, Text} from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import {Link} from "@react-navigation/native";
+
 
 const HomeScreen = ({navigation}) =>{
 
 
 
     return (
-        <ScrollView style={styles.container}>
-            <SafeAreaView>
-            <Image
-        style={styles.logo}
-        source={{
-          uri: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==',
-        }}
-      />
-            </SafeAreaView>
-            
-            
+        <ScrollView >
+                <View>
+
+                        <Card style={styles.cardTitle}>
+                            <Text style={{textAlign: 'center', color:'#718FE6'}} category='h4'>
+                                Welcome to my Anime Watchlist App
+                            </Text>
+                        </Card>
+                    <Image source={require('../assets/anya-pointing-at-tv.jpg')} style={{height: 300,
+                        flex: 1,marginHorizontal:10,
+                        width: null}}></Image>
+                        <Card style={styles.card}>
+                            <Text style={{textAlign: 'center', color:'#7999F5'}} category='h5'>
+                                About
+                            </Text>
+
+                            <Text style={{textAlign: 'center'}} category='h6'>
+                                Here you will be able to find cool new animes to watch and add them to your own watchlist to keep track. You can also mark your animes as already watched.
+                            </Text>
+                        </Card>
+                    <Image source={require('../assets/anime-watching-tv.jpeg')} style={{height: 300,
+                        flex: 1,marginHorizontal:10,
+                        width: null}}></Image>
+                    <Card style={styles.card}>
+                        <Text style={{textAlign: 'center', color:'#7999F5'}} category='h5'>
+                            Features
+                        </Text>
+
+                        <Text style={{textAlign: 'center'}} category='h6'>
+                            In the app you should be able to sign up, add items to your watchlist, and even simply search up basic information about the anime. The API being used is Jikan V4 API.
+                        </Text>
+
+                    </Card>
+
+                </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#D2EFEF'
-    },
+
     homeHeader:{
         fontSize:20,
         textAlign:'center',
         fontFamily:'American Typewriter'
+    },
+    cardTitle:{
+        marginBottom:20
     },
     containerBottom:{
       alignItems: 'center',
@@ -48,6 +76,19 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
       },
+    card:{
+        flex:1,
+        marginVertical:20,
+        marginHorizontal:5
+    },
+    rowContainer:{
+        flexDirection:'row'
+    },
+    image:{
+        flex: 1,
+        justifyContent: 'center',
+        height:'100%',
+    }
   });
 
 export {HomeScreen}
