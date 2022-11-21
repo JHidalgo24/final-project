@@ -5,6 +5,8 @@ import {WatchlistScreen} from "./WatchlistScreen";
 import {AccountScreen} from "./AccountScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {StyleSheet} from "react-native";
+import {LoginPage} from "./LoginPage";
+import {CommunityChat} from "./CommunityChat";
 
 
 const Tab = createBottomTabNavigator();
@@ -45,6 +47,16 @@ let  MyTabs = () => {
                     <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
                 ),
             }} name="Watchlist" component={WatchlistScreen} />
+            <Tab.Screen options={{
+                tabBarLabel: 'Community Chat',headerStyle:{
+                    backgroundColor:'#FFC1D3'
+                },
+                headerTintColor:'#000'
+                ,
+                tabBarIcon: ({ color, size }) => (
+                    <MaterialCommunityIcons name="message" color={color} size={size} />
+                ),
+            }} name="Community Chat" component={CommunityChat} />
             <Tab.Screen options={{
                 tabBarLabel: 'Account',headerStyle:{
                     backgroundColor:'#FFC1D3'
