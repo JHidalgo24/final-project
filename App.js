@@ -11,6 +11,7 @@ import { WatchlistScreen } from './components/WatchlistScreen';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 import {MyTabs} from "./components/MyTabs";
+import {useFonts} from "expo-font";
 
 
 const Tab = createBottomTabNavigator();
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
     color:'#EBEBEB',
     fontWeight:'900',
     fontSize:'25%',
-    fontFamily:'American Typewriter',
   },
     navigator:{
       backgroundColor:'black',

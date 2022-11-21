@@ -12,14 +12,14 @@ const Tab = createBottomTabNavigator();
 let  MyTabs = () => {
     return (
         <Tab.Navigator style={styles.navigator} screenOptions={{
-            tabBarActiveTintColor: '#68CACA',
+            tabBarActiveTintColor: '#EE8AF8',
         }}>
             <Tab.Screen options={{
                 tabBarLabel: 'Home',
                 headerStyle:{
-                    backgroundColor:'#36446E'
+                    backgroundColor:'#FFC1D3'
                 },
-                headerTintColor:'#FFF'
+                headerTintColor:'#000'
                 ,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="home" color={color} size={size} />
@@ -27,9 +27,9 @@ let  MyTabs = () => {
             }} name="Home" component={HomeScreen} />
             <Tab.Screen options={{
                 tabBarLabel: 'Search',headerStyle:{
-                    backgroundColor:'#36446E'
+                    backgroundColor:'#FFC1D3'
                 },
-                headerTintColor:'#FFF'
+                headerTintColor:'#000'
                 ,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="magnify" color={color} size={size} />
@@ -37,9 +37,9 @@ let  MyTabs = () => {
             }} name="Search" component={SearchScreen} />
             <Tab.Screen options={{
                 tabBarLabel: 'My Watchlist',headerStyle:{
-                    backgroundColor:'#36446E'
+                    backgroundColor:'#FFC1D3'
                 },
-                headerTintColor:'#FFF'
+                headerTintColor:'#000'
                 ,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
@@ -47,9 +47,9 @@ let  MyTabs = () => {
             }} name="Watchlist" component={WatchlistScreen} />
             <Tab.Screen options={{
                 tabBarLabel: 'Account',headerStyle:{
-                    backgroundColor:'#36446E'
+                    backgroundColor:'#FFC1D3'
                 },
-                headerTintColor:'#FFF'
+                headerTintColor:'#000'
                 ,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="account" color={color} size={size} />

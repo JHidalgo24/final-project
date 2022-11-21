@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Button, View, Image, SafeAreaView, StyleSheet, ScrollView} from "react-native"
+import {Button, View, Image, SafeAreaView, StyleSheet, ScrollView, ImageBackground, FlatList} from "react-native"
 import {ApplicationProvider, Avatar, Card, Layout,ListItem, List, Text} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 
@@ -26,18 +26,20 @@ let AccountScreen = ({navigation}) => {
 
     return(
 
-        <ApplicationProvider {...eva} theme={eva.light}>
-        <ScrollView nestedScrollEnabled = {true}>
+
+            <ImageBackground source={require('../assets/wallpaper.jpg')}>
+        <ScrollView >
 
                 <View style={styles.containerImage}>
-                    <Image  style={styles.avatar} source={require('../assets/avatar.jpg')} ></Image>
-                    <Text style={{marginTop:20,marginBottom:5}} category='h4'>User Name</Text>
+                    <Text style={{marginTop:20,marginBottom:5, color:'#000'}} category='h4'>User Name</Text>
                     <Text style={{marginBottom:20}} category='h6'>email@email.com</Text>
+                    <Image  style={styles.avatar} source={require('../assets/avatar.jpg')} ></Image>
+
                 </View>
 
                     <Card  style={styles.cardFriends}>
                         <Text>Anime in Watchlist</Text>
-                        <List
+                        <FlatList
                             style={styles.container}
                             data={data}
                             renderItem={renderItem}
@@ -45,7 +47,7 @@ let AccountScreen = ({navigation}) => {
                     </Card>
                     <Card style={styles.cardFriends}>
                         <Text>Animes Watched</Text>
-                        <List
+                        <FlatList
                             style={styles.container}
                             data={data}
                             renderItem={renderItem}
@@ -55,7 +57,7 @@ let AccountScreen = ({navigation}) => {
 
                     <Card style={styles.cardFriends}>
                         <Text category='h5'>Your Friends</Text>
-                        <List
+                        <FlatList
                             style={styles.container}
                             data={friends}
                             renderItem={renderFriends}
@@ -63,7 +65,8 @@ let AccountScreen = ({navigation}) => {
 
                     </Card>
         </ScrollView>
-        </ApplicationProvider>
+            </ImageBackground>
+
     )
 
 }

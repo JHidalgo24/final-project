@@ -11,26 +11,27 @@ const HomeScreen = ({navigation}) =>{
 
 
     return (
-        <ScrollView >
+        <ImageBackground source={require('../assets/wallpaper.jpg')}>
+            <ScrollView >
                 <View>
 
-                        <Card style={styles.cardTitle}>
-                            <Text style={{textAlign: 'center', color:'#718FE6'}} category='h4'>
-                                Welcome to my Anime Watchlist App
-                            </Text>
-                        </Card>
+                    <Card style={styles.cardTitle}>
+                        <Text style={{textAlign: 'center', color:'#718FE6'}} category='h4'>
+                            Welcome to my Anime Watchlist App
+                        </Text>
+                    </Card>
                     <Image source={require('../assets/anya-pointing-at-tv.jpg')} style={{height: 300,
                         flex: 1,marginHorizontal:10,
                         width: null}}></Image>
-                        <Card style={styles.card}>
-                            <Text style={{textAlign: 'center', color:'#7999F5'}} category='h5'>
-                                About
-                            </Text>
+                    <Card style={styles.card}>
+                        <Text style={{textAlign: 'center', color:'#7999F5'}} category='h5'>
+                            About
+                        </Text>
 
-                            <Text style={{textAlign: 'center'}} category='h6'>
-                                Here you will be able to find cool new animes to watch and add them to your own watchlist to keep track. You can also mark your animes as already watched.
-                            </Text>
-                        </Card>
+                        <Text style={{textAlign: 'center'}} category='h6'>
+                            Here you will be able to find cool new animes to watch and add them to your own watchlist to keep track. You can also mark your animes as already watched.
+                        </Text>
+                    </Card>
                     <Image source={require('../assets/anime-watching-tv.jpeg')} style={{height: 300,
                         flex: 1,marginHorizontal:10,
                         width: null}}></Image>
@@ -46,7 +47,8 @@ const HomeScreen = ({navigation}) =>{
                     </Card>
 
                 </View>
-        </ScrollView>
+            </ScrollView>
+        </ImageBackground>
     )
 }
 
