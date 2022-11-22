@@ -11,7 +11,7 @@ import {CommunityChat} from "./CommunityChat";
 
 const Tab = createBottomTabNavigator();
 
-let  MyTabs = () => {
+let  MyTabs = (props) => {
     return (
         <Tab.Navigator style={styles.navigator} screenOptions={{
             tabBarActiveTintColor: '#EE8AF8',
@@ -56,7 +56,7 @@ let  MyTabs = () => {
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="message" color={color} size={size} />
                 ),
-            }} name="Community Chat" component={CommunityChat} />
+            }} name="Community Chat"  children={() => <CommunityChat getUser={props.getUser} user={props.user} ></CommunityChat>} />
             <Tab.Screen options={{
                 tabBarLabel: 'Account',headerStyle:{
                     backgroundColor:'#FFC1D3'
@@ -66,7 +66,7 @@ let  MyTabs = () => {
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="account" color={color} size={size} />
                 ),
-            }} name="Account" component={AccountScreen} />
+            }} name="Account" children={() => <AccountScreen user={props.user} getUser={props.getUser}></AccountScreen>} />
         </Tab.Navigator>
     );
 }

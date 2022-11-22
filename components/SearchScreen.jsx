@@ -42,6 +42,7 @@ let SearchScreen = () => {
         let statusCode = 0;
         let paramsStuff = {}
         try {
+            setStuff([])
             setIsVisible(true);
             if (lewdStuff) {
                 paramsStuff = {
@@ -81,14 +82,25 @@ let SearchScreen = () => {
         <AnimeCard item={item}></AnimeCard>
     </View>);
 
-    return (<ImageBackground style={{flexGrow: 1}} source={startingImage}>
+    return (
+
+        <ImageBackground style={{flexGrow: 1}} source={startingImage}>
             <ScrollView>
 
                 <SafeAreaView style={styles.containerRow}>
                     <Input onChangeText={(x) => {
                         setSearch(x)
                     }} accessoryRight={renderIcon}
-                           style={{marginTop: 10, width: '75%', maxWidth: '70%', marginRight: 10, fontStyle: 'italic'}}
+                           style={{
+                               marginTop: 10,
+                               width: '75%',
+                               maxWidth: '70%',
+                               marginRight: 10,
+                               fontStyle: 'italic',
+                               borderRadius: 8,
+                               borderWidth: 1,
+                               borderColor: '#000'
+                           }}
                            placeholder='ex. Naruto, Bleach, One Piece'></Input>
                     <TouchableOpacity onPress={() => {
                         SearchAnime()
@@ -97,19 +109,28 @@ let SearchScreen = () => {
                     }}><Text style={{color: 'white', padding: 10, textAlign: 'center'}}>Search</Text></TouchableOpacity>
 
                 </SafeAreaView>
-                <View style={{alignItems: 'center', justifyContent: 'center', marginLeft: 10, paddingTop: 20}}>
-                    <Text style={{fontWeight: 'bold', color: 'red', fontStyle: 'italic'}}>NSFW</Text>
-                    <Switch trackColor={{false: "#767577", true: "#EE8AF8"}}
-                            thumbColor='#FFC1D3' value={lewdStuff}
-                            onValueChange={() => setLewdStuff(!lewdStuff)}></Switch>
 
-                </View>
 
                 <View>
-                    <ScrollView>
-                        <ActivityIndicator color='#EE8AF8' size={'large'} hidesWhenStopped={true}
-                                           animating={isVisible}></ActivityIndicator>
+                    <SafeAreaView>
+                        <SafeAreaView style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginLeft: 10,
+                            flexDirection: 'row',
+                            marginVertical: 0,
+                            paddingVertical: 0
+                        }}>
+                            <Text style={{fontWeight: 'bold', color: 'red', fontStyle: 'italic'}}>NSFW</Text>
+                            <Switch trackColor={{false: "#767577", true: "#EE8AF8"}}
+                                    thumbColor='#FFC1D3' value={lewdStuff}
+                                    onValueChange={() => setLewdStuff(!lewdStuff)}></Switch>
+
+                        </SafeAreaView>
+
                         <View style={styles.container}>
+                            {isVisible ? <ActivityIndicator color='#EE8AF8' size={'large'} hidesWhenStopped={true}
+                                                            animating={isVisible}></ActivityIndicator> : null}
                             {nothingFound ? <View style={{flexDirection: 'row'}}><Text category={'h3'}>Nothing was
                                 Found </Text><Image
                                 style={{width: 40, height: 40}}
@@ -120,11 +141,13 @@ let SearchScreen = () => {
                             data={stuff}
                             renderItem={renderItem}
                         />
-                    </ScrollView>
-                </View>
 
+                    </SafeAreaView>
+                </View>
             </ScrollView>
+
         </ImageBackground>
+
 
     )
 

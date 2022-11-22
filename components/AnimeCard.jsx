@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     }, backdrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     }, tinyLogo: {
-        width: "90%", height: 500, alignSelf: 'center', borderRadius: 25
+        width: "90%", height: 500, alignSelf: 'center', borderRadius: 25, borderWidth:2, borderColor:'#EE8AF8'
 
     },
 });

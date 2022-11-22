@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
@@ -9,26 +9,39 @@ import * as eva from '@eva-design/eva';
 import {Link} from "@react-navigation/native";
 
 
-const PostCard = ({navigation}) => {
-
-    let [hidePassword, setHidePassword] = useState(true);
+const PostCard = (props) => {
 
 
-    return (<ImageBackground style={styles.imageBackground} source={require('../assets/wallpaper.jpg')}>
-        <Card style={{marginHorizontal: 10}}>
-            <Text category={'h5'}>Post Title</Text>
-            <Text>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi architecto at cum cumque
-                doloremque doloribus ducimus facere in ipsam libero magnam modi officia perspiciatis possimus quam
-                similique tenetur, unde, voluptate!</Text>
+    let [color, setColor] = useState('#FFC1D3')
+    let colorArray = ['#FFC1D3', '#9DE7E5', '#DCB6D5', '#B3B3F1', '#CEC2FF']
+    useEffect(() => {
 
-            <View style={styles.buttonsLike}>
-                <TouchableOpacity style={styles.buttonsLike}><Text><MaterialCommunityIcons size={30}
-                                                                                           name={'thumb-up'}></MaterialCommunityIcons></Text></TouchableOpacity>
-                <TouchableOpacity style={styles.buttonsLike}><Text><MaterialCommunityIcons size={30}
-                                                                                           name={'thumb-down'}></MaterialCommunityIcons></Text></TouchableOpacity>
+        let number = Math.floor(Math.random() * 5)
+
+        setColor(colorArray[number]);
+
+    })
+
+
+    return (
+
+        <Card style={{margin: 10, width: '95%', borderRadius: 25, borderColor: color, borderWidth: 2}}>
+            <View style={{flexDirection: 'row'}}>
+                <View style={styles.containCenter}>
+                    <Image style={[styles.postImageAvatar, {borderColor: color}]}
+                           source={{uri: props.item.userImage}}></Image>
+
+
+                </View>
+                <View style={{width: '75%'}}>
+                    <Text category={'h6'}>{props.item.PostTitle}</Text>
+                    <Text style={{marginVertical: 10}}>{props.item.displayName}</Text>
+                    <Text>{props.item.PostContent}</Text>
+
+
+                </View>
             </View>
-        </Card>
-    </ImageBackground>)
+        </Card>)
 }
 
 const styles = StyleSheet.create({
@@ -44,8 +57,10 @@ const styles = StyleSheet.create({
         borderWidth: 1
     }, inputContainer: {
         backgroundColor: 'white', borderRadius: 8, flexDirection: 'row', alignItems: 'center'
-    }, buttonsLike: {
-        marginLeft: 15, marginTop: 20, alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row'
+    }, postImageAvatar: {
+        height: 80, width: 80, borderRadius: 50, borderWidth: 2,
+    }, containCenter: {
+        justifyContent: 'center', alignItems: 'center', marginRight: 20
     }
 
 });

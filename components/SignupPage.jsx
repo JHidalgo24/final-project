@@ -2,7 +2,17 @@ import React, {useState} from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
-    SafeAreaView, View, StyleSheet, ScrollView, TextInput, Image, ImageBackground, Linking, TouchableOpacity, Switch
+    SafeAreaView,
+    View,
+    StyleSheet,
+    ScrollView,
+    TextInput,
+    Image,
+    ImageBackground,
+    Linking,
+    TouchableOpacity,
+    Switch,
+    ActivityIndicator
 } from "react-native"
 import {ApplicationProvider, Card, Input, Layout, Text, Button, Toggle} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
@@ -14,10 +24,11 @@ const SignupPage = (props) => {
     let [hidePassword, setHidePassword] = useState(false);
     let [password, setPassword] = useState();
     let [email, setEmail] = useState();
+    let [isVisible, setIsVisible] = useState(false);
     let SignupWithPassword = () => {
-
+        setIsVisible(true)
         props.SignUpWithEmailAndPassword(email, password)
-
+        setIsVisible(false)
     }
 
 
@@ -70,6 +81,8 @@ const SignupPage = (props) => {
             }} onPress={() => {
                 SignupWithPassword()
             }}>Sign-in</Text></TouchableOpacity>
+            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
+
         </View>
     </ImageBackground>)
 }

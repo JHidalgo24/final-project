@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {
     Button,
@@ -26,7 +26,7 @@ import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs
 const Tab = createMaterialTopTabNavigator();
 
 
-let AccountScreen = ({navigation}) => {
+let AccountScreen = (props) => {
     const data = ['Bleach', 'Naruto', 'Naruto:Shippuden'];
     const friends = new Array(10).fill({
         title: 'Friend'
@@ -48,23 +48,40 @@ let AccountScreen = ({navigation}) => {
     let [imagePicked, setImagePicked] = useState();
     let [signUpError, setSignUpError] = useState();
     let [loginError, setLoginError] = useState();
+
+
+    useEffect(() => {
+        let setUserThingy = () => {
+            if (props.user !== null){
+                setUser(props.user)
+                setUserSignedIn(true)
+            }
+        }
+        setUserThingy()
+    })
+
     let LoginWithEmailandPassword = async (email, password) => {
-        let provider = firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
+        let provider = await firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
             var user = userCredential.user;
             setUser(new User(user));
             setUserSignedIn(true)
-            console.log(user)
+            props.getUser();
+            setLoginError(' ')
+
         }).catch((err) => {
             setLoginError(err.message)
         })
     }
 
     let SignUpWithEmailAndPassword = async (email, password) => {
+
         let provider = await firebase.auth().createUserWithEmailAndPassword(email, password).then((userCredential) => {
             var user = userCredential.user;
             setUser(new User(user))
             setUserSignedIn(true);
-            console.log(user)
+            props.getUser();
+            setSignUpError(' ')
+
         }).catch((err) => {
             setSignUpError(err.message)
         })
@@ -79,7 +96,11 @@ let AccountScreen = ({navigation}) => {
             displayName: namePicked,
         })
 
-        setUser(firebase.auth().currentUser)
+
+
+        props.getUser()
+
+        setUser(props.user)
 
 
         setModalName(!modalName)
@@ -93,22 +114,23 @@ let AccountScreen = ({navigation}) => {
             photoURL: imagePicked,
         })
 
-        setUser(firebase.auth().currentUser)
-
+        props.getUser()
+        setUser(props.user)
 
         setModalImage(!modalImage)
     }
 
-    let logoutUser = () => {
-        firebase.auth().signOut()
+    let logoutUser = async () => {
+        await firebase.auth().signOut()
         setUserSignedIn(false)
+        await props.getUser();
     }
 
     if (userSignedIn) {
-        return (<ImageBackground source={require('../assets/wallpaper.jpg')}>
-            <ScrollView>
+        return (<ImageBackground style={{flexGrow:1}} source={require('../assets/watchlist_background.png')}>
+            <SafeAreaView>
 
-                <View style={styles.containerImage}>
+                <SafeAreaView style={styles.containerImage}>
                     <TouchableOpacity onPress={() => {
                         setModalName(!modalName)
                     }}><Text style={{marginTop: 20}}
@@ -125,8 +147,8 @@ let AccountScreen = ({navigation}) => {
                     <TouchableOpacity onPress={() => {
                         setModalImage(!modalImage)
                     }} style={{
-                        color: '#FFF', backgroundColor: '#FFF', borderRadius: 15, width: 200, textAlign: 'center'
-                    }}><Text style={{textAlign: 'center', padding: 12, fontWeight: 'bold'}}>Change
+                        color: '#FFF',  borderRadius: 15, width: 200, marginVertical:10, textAlign: 'center'
+                    }}><Text style={{textAlign: 'center', padding: 12, fontWeight: 'bold',}}>Change
                         Image <MaterialCommunityIcons size={20} name='pencil'/></Text></TouchableOpacity>
 
                     <Modal backdropStyle={{backgroundColor: 'rgba(0, 0, 0, .85)'}}
@@ -229,37 +251,11 @@ let AccountScreen = ({navigation}) => {
                     </Modal>
 
 
-                </View>
-
-                <Card style={styles.cardFriends}>
-                    <Text>Anime in Watchlist</Text>
-                    <FlatList
-                        style={styles.container}
-                        data={data}
-                        renderItem={renderItem}
-                    />
-                </Card>
-                <Card style={styles.cardFriends}>
-                    <Text>Animes Watched</Text>
-                    <FlatList
-                        style={styles.container}
-                        data={data}
-                        renderItem={renderItem}
-                    />
-                </Card>
+                </SafeAreaView>
 
 
-                <Card style={styles.cardFriends}>
-                    <Text category='h5'>Your Friends</Text>
-                    <FlatList
-                        style={styles.container}
-                        data={friends}
-                        renderItem={renderFriends}
-                    />
 
-                </Card>
-
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <SafeAreaView style={{justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity
                         style={{backgroundColor: '#EE8AF8', borderRadius: 25, width: '30%', margin: 15}}
                         onPress={() => {
@@ -268,8 +264,8 @@ let AccountScreen = ({navigation}) => {
                         style={{color: '#FFF', paddingHorizontal: 10, paddingVertical: 10, textAlign: 'center'}}>Log
                         Out</Text></TouchableOpacity>
 
-                </View>
-            </ScrollView>
+                </SafeAreaView>
+            </SafeAreaView>
         </ImageBackground>)
     } else {
         return (<Tab.Navigator screenOptions={{

@@ -2,7 +2,17 @@ import React, {useState} from 'react'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
-    SafeAreaView, View, StyleSheet, ScrollView, TextInput, Image, ImageBackground, Linking, TouchableOpacity, Switch
+    SafeAreaView,
+    View,
+    StyleSheet,
+    ScrollView,
+    TextInput,
+    Image,
+    ImageBackground,
+    Linking,
+    TouchableOpacity,
+    Switch,
+    ActivityIndicator
 } from "react-native"
 import {ApplicationProvider, Card, Input, Layout, Text, Button, Toggle} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
@@ -14,14 +24,16 @@ const LoginPage = (props) => {
     let [hidePassword, setHidePassword] = useState(false);
     let [password, setPassword] = useState();
     let [email, setEmail] = useState();
-    let loginWithPassword = () => {
-
-        props.LoginWithEmailandPassword(email, password)
-
+    let [isVisible, setIsVisible] = useState(false);
+    let loginWithPassword = async () => {
+        setIsVisible(true)
+        await props.LoginWithEmailandPassword(email, password)
+        setIsVisible(false)
     }
 
 
-    return (<ImageBackground style={styles.imageBackground} source={require('../assets/wallpaper.jpg')}>
+    return (
+        <ImageBackground style={styles.imageBackground} source={require('../assets/wallpaper.jpg')}>
         <View style={styles.container}>
             <Text style={{marginVertical: 15}} category={'h4'}>Sign In</Text>
             <TextInput onChangeText={(z) => {
@@ -59,6 +71,7 @@ const LoginPage = (props) => {
                     onValueChange={() => setHidePassword(!hidePassword)}></Switch>
 
             <Text style={{color:'red', fontWeight:'bold'}} >{props.loginError}</Text>
+            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
             <TouchableOpacity><Text style={{
                 color: '#FFF',
                 paddingHorizontal: 35,

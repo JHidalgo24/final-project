@@ -12,6 +12,9 @@ import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 import {MyTabs} from "./components/MyTabs";
 import {useFonts} from "expo-font";
+import {firebase} from "./firebaseConfig";
+import User from "./Models/User";
+import {useEffect, useState} from "react";
 
 
 const Tab = createBottomTabNavigator();
@@ -21,13 +24,32 @@ const Stack = createNativeStackNavigator();
 
 
 
+
+
+
 export default function App() {
+
+
+
+  let getUser = async () => {
+    await firebase.auth().onAuthStateChanged(x => {
+      if (x) {
+        setUser(new User(x))
+      } else {
+        setUser(null)
+      }
+    })
+  }
+
+
+  let [user, setUser] = useState(null);
+
   return (
 
 
-    <NavigationContainer>
+    <NavigationContainer onStateChange={() => getUser()}>
       <ApplicationProvider {...eva} theme={eva.light}>
-          <MyTabs></MyTabs>
+          <MyTabs getUser={getUser} user={user} ></MyTabs>
       </ApplicationProvider>
     </NavigationContainer>
 

@@ -1,40 +1,200 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {
-    Button, SafeAreaView, View, StyleSheet, ScrollView, Image, ImageBackground, Linking, TouchableOpacity, TextInput
+    Button,
+    SafeAreaView,
+    View,
+    StyleSheet,
+    ScrollView,
+    Image,
+    ImageBackground,
+    Linking,
+    TouchableOpacity,
+    TextInput,
+    FlatList,
+    ActivityIndicator
 } from "react-native"
 import {ApplicationProvider, Card, Layout, Text} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import {Link} from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {PostCard} from "./PostCard";
+import {auth, db, firebase} from "../firebaseConfig";
+
+import User from "../Models/User";
 
 
-const CommunityChat = () => {
+const CommunityChat = (props) => {
+
+    let [title, setTitle] = useState();
+    let [content, setContent] = useState();
+    let [posts, setPosts] = useState([]);
+    let [isVisible, setIsVisible] = useState(false)
+    let [displayNameMissing, setDisplayNameMissing] = useState(false);
+    let [photoURLMissing, setPhotoURLMissing] = useState(false);
 
 
-    return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
-        <ScrollView>
-            <SafeAreaView style={{
-                backgroundColor: '#FFF',
-                borderRadius: 25,
-                justifyContent: 'flex-end',
-                marginVertical: 20,
-                marginHorizontal: 10
-            }}>
-                <Text category={'h4'} style={{textAlign: 'center', paddingTop: 20}}>Make a post</Text>
-                <TextInput style={styles.inputItem} placeholder='Post Title'></TextInput>
-                <TextInput multiline={true} style={styles.postContent} placeholder='Content'></TextInput>
+    let renderPosts = ({item}) => {
+        return (<View style={{width: '100%'}}>
+            <PostCard item={item}>
 
-            </SafeAreaView>
+            </PostCard>
+        </View>)
+    }
+
+    let addPost = async () => {
+        if (props.user.displayName !== "" && props.user.photoURL !== "") {
+            let userThingy = firebase.auth().currentUser;
+            await db.collection('CommunityPosts').add({
+                PostTitle: title, PostContent: content, uid: userThingy.uid, displayName:userThingy.displayName,userImage:userThingy.photoURL,email:userThingy.email
+            }).then(() => {
+                setContent('');
+                setTitle('')
+            })
+        } else {
+
+            if (props.user.displayName === null || props.user.displayName === "") {
+                setDisplayNameMissing(true)
+            }
+            else {
+                setDisplayNameMissing(false)
+            }
+            if (props.user.photoURL === null || props.user.photoURL === "") {
+                setPhotoURLMissing(true)
+
+            }
+            else {
+                setPhotoURLMissing(false)
+            }
+
+        }
+        await getPost();
+    }
+
+    let getPost = async () => {
+        let emptyArray = [];
+        setIsVisible(true);
+        await db.collection("CommunityPosts").get().then((querySnap) => {
+            querySnap.forEach((doc) => emptyArray.push(doc.data()))
+        })
+
+        setPosts(emptyArray)
+
+        setIsVisible(false);
+    }
+
+    useEffect(() => {
+
+        getPost = async () => {
+
+
+            setDisplayNameMissing(false)
+            setPhotoURLMissing(false);
+            let emptyArray = [];
+
+            setIsVisible(true);
+            await db.collection("CommunityPosts").get().then((querySnap) => {
+                querySnap.forEach((doc) => emptyArray.push(doc.data()))
+            })
+
+            setPosts(emptyArray)
+            setIsVisible(false);
+            await props.getUser();
+
+
+        }
+
+        getPost()
+
+
+    }, [])
+
+
+    if (props.user === null) {
+        return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+                <ScrollView>
+                    <SafeAreaView style={{
+                        backgroundColor: '#FFF',
+                        borderRadius: 25,
+                        justifyContent: 'flex-end',
+                        marginVertical: 20,
+                        marginHorizontal: 10
+                    }}>
+
+                        <Text category={'h4'} style={{textAlign: 'center', paddingVertical: 20}}>Sign-in to make a
+                            Post</Text>
+
+                    </SafeAreaView>
+                    <ScrollView>
+                        <Text style={{textAlign: 'center', marginTop: 25, marginBottom: 5}} category={'h2'}>Recent
+                            Posts <TouchableOpacity onPress={() => {
+                                getPost()
+                            }}><MaterialCommunityIcons size={20}
+                                                       name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
+
+                        <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
+                                           animating={isVisible}></ActivityIndicator>
+
+                        <FlatList data={posts} renderItem={renderPosts}></FlatList>
+
+                    </ScrollView>
+
+                </ScrollView>
+            </ImageBackground>
+
+        )
+    } else {
+        return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
             <ScrollView>
-                <Text style={{textAlign: 'center'}} category={'h2'}>Recent Posts</Text>
-                <PostCard></PostCard>
+                <SafeAreaView style={{
+                    backgroundColor: '#FFF',
+                    borderRadius: 25,
+                    justifyContent: 'flex-end',
+                    marginVertical: 20,
+                    marginHorizontal: 10,
+                    borderColor: '#FFC1D3',
+                    borderWidth: 2
+                }}>
+
+                    <Text category={'h4'} style={{textAlign: 'center', paddingTop: 20}}>Make a post</Text>
+                    <TextInput value={title} onChangeText={(x) => {
+                        setTitle(x)
+                    }} style={styles.inputItem} placeholder='Post Title'></TextInput>
+                    <TextInput value={content} onChangeText={(x) => {
+                        setContent(x)
+                    }} multiline={true} style={styles.postContent} placeholder='Content'></TextInput>
+                    {displayNameMissing ?
+                        <Text style={styles.missingInfo}>You don't have a name for your account. Set one in the Account Page</Text> : null}
+                    {photoURLMissing ? <Text style={styles.missingInfo}>You are Missing an image please add one to your account</Text> : null}
+                    <TouchableOpacity><Text style={{
+                        color: '#FFF',
+                        paddingHorizontal: 35,
+                        paddingVertical: 15,
+                        backgroundColor: '#FFC1D3',
+                        margin: 30,
+                        borderRadius: 30,
+
+                    }} onPress={() => {
+                        addPost()
+                    }}>Post</Text></TouchableOpacity>
+                </SafeAreaView>
+                <ScrollView>
+                    <Text style={{textAlign: 'center', marginTop: 15, marginBottom: 0}} category={'h2'}>Recent
+                        Posts <TouchableOpacity onPress={() => {
+                            getPost()
+                        }}><MaterialCommunityIcons size={20}
+                                                   name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
+
+                    <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
+                                       animating={isVisible}></ActivityIndicator>
+
+                    <FlatList data={posts} renderItem={renderPosts}></FlatList>
+
+                </ScrollView>
 
             </ScrollView>
-
-        </ScrollView>
-    </ImageBackground>)
+        </ImageBackground>)
+    }
 }
 
 const styles = StyleSheet.create({
@@ -59,8 +219,12 @@ const styles = StyleSheet.create({
         margin: 25, borderWidth: 1, borderColor: '#000', borderRadius: 25, paddingHorizontal: 20, height: 150
     }, image: {
         flex: 1, justifyContent: 'center', height: '100%',
-    }, buttonsLike: {
-        marginLeft: 15, marginTop: 20, alignItems: 'flex-end', justifyContent: 'flex-end', flexDirection: 'row'
+    },
+    missingInfo:{
+        textAlign:'center',
+        color:'red',
+        fontWeight:'bold',
+        marginVertical:2
     }
 });
 

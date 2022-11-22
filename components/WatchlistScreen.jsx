@@ -1,15 +1,17 @@
 import React from 'react'
 
-import {Button, SafeAreaView, StyleSheet, TouchableOpacity, View, ImageBackground} from "react-native"
+import {Button, SafeAreaView,Image, StyleSheet, TouchableOpacity, View, ImageBackground} from "react-native"
 import {Input, Text} from "@ui-kitten/components";
 
 
 let WatchlistScreen = ({navigation}) => {
 
 
-    return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+    return (
+        <ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
             <View style={styles.container}>
-                <Text category='h6' style={styles.bigText}>You have nothing in here :(</Text>
+                <Text category='h6' style={styles.bigText}>You have nothing in here </Text>
+                <Image source={require('../assets/ChiSilly.png')} resizeMode={'contain'} resizeMethod={'scale'} style={{width:50}}></Image>
             </View>
         </ImageBackground>
 
