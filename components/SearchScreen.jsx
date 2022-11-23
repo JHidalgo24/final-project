@@ -26,8 +26,13 @@ let renderIcon = () => {
 }
 
 
-let SearchScreen = () => {
 
+
+
+let SearchScreen = (props) => {
+    const renderItem = ({item}) => (<View style={{flexDirection: 'column', width: "100%", marginBottom: 10}}>
+        <AnimeCard user={props.user} item={item}></AnimeCard>
+    </View>);
 
     let [search, setSearch] = useState('Your Search Will Appear Here');
     let [stuff, setStuff] = useState([]);
@@ -36,6 +41,11 @@ let SearchScreen = () => {
     let [startingImage, setStartingImage] = useState(require("../assets/wallpaper.jpg"))
     let [nothingFound, setNothingFound] = useState(false);
     let [lewdStuff, setLewdStuff] = useState(false);
+
+
+    useEffect(() => {
+
+    })
 
 
     const SearchAnime = async () => {
@@ -73,14 +83,9 @@ let SearchScreen = () => {
         } finally {
             setIsVisible(false);
         }
-
-
     }
 
 
-    const renderItem = ({item}) => (<View style={{flexDirection: 'column', width: "100%", marginBottom: 10}}>
-        <AnimeCard item={item}></AnimeCard>
-    </View>);
 
     return (
 
@@ -138,6 +143,7 @@ let SearchScreen = () => {
                         </View>
 
                         <FlatList
+                            maxToRenderPerBatch={5}
                             data={stuff}
                             renderItem={renderItem}
                         />

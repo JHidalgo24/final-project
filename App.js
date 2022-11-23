@@ -16,16 +16,8 @@ import {firebase} from "./firebaseConfig";
 import User from "./Models/User";
 import {useEffect, useState} from "react";
 
-
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-
-
-
-
-
-
 
 export default function App() {
 

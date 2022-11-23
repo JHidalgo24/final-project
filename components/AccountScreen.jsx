@@ -39,7 +39,7 @@ let AccountScreen = (props) => {
     const renderFriends = ({item, index}) => (<ListItem>
         <Text style={{fontWeight: 'bold'}}>{item.title} {index + 1}</Text>
     </ListItem>);
-    const [userSignedIn, setUserSignedIn] = useState(false)
+    let [userSignedIn, setUserSignedIn] = useState(false)
     let [signUp, setSignUp] = useState(true);
     let [modalName, setModalName] = useState(false);
     let [modalImage, setModalImage] = useState(false);

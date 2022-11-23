@@ -16,7 +16,7 @@ let  MyTabs = (props) => {
         <Tab.Navigator style={styles.navigator} screenOptions={{
             tabBarActiveTintColor: '#EE8AF8',
         }}>
-            <Tab.Screen options={{
+            <Tab.Screen  options={{
                 tabBarLabel: 'Home',
                 headerStyle:{
                     backgroundColor:'#FFC1D3'
@@ -36,7 +36,7 @@ let  MyTabs = (props) => {
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="magnify" color={color} size={size} />
                 ),
-            }} name="Search" component={SearchScreen} />
+            }} name="Search" children={() => <SearchScreen getUser={props.getUser} user={props.user}></SearchScreen>} />
             <Tab.Screen options={{
                 tabBarLabel: 'My Watchlist',headerStyle:{
                     backgroundColor:'#FFC1D3'
@@ -46,7 +46,7 @@ let  MyTabs = (props) => {
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
                 ),
-            }} name="Watchlist" component={WatchlistScreen} />
+            }} name="Watchlist" children={() => <WatchlistScreen user={props.user} getUser={props.getUser}></WatchlistScreen>} />
             <Tab.Screen options={{
                 tabBarLabel: 'Community Chat',headerStyle:{
                     backgroundColor:'#FFC1D3'

@@ -85,61 +85,53 @@ const CommunityChat = (props) => {
 
     useEffect(() => {
 
-        getPost = async () => {
+        if (props.user !== null){
+            getPost = async () => {
 
 
-            setDisplayNameMissing(false)
-            setPhotoURLMissing(false);
-            let emptyArray = [];
+                setDisplayNameMissing(false)
+                setPhotoURLMissing(false);
+                let emptyArray = [];
 
-            setIsVisible(true);
-            await db.collection("CommunityPosts").get().then((querySnap) => {
-                querySnap.forEach((doc) => emptyArray.push(doc.data()))
-            })
+                setIsVisible(true);
+                await db.collection("CommunityPosts").get().then((querySnap) => {
+                    querySnap.forEach((doc) => emptyArray.push(doc.data()))
+                })
 
-            setPosts(emptyArray)
-            setIsVisible(false);
-            await props.getUser();
+                setPosts(emptyArray)
+                setIsVisible(false);
+                await props.getUser();
 
 
+            }
+
+            getPost()
         }
-
-        getPost()
 
 
     }, [])
 
 
     if (props.user === null) {
-        return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
-                <ScrollView>
-                    <SafeAreaView style={{
+        return (
+            <ImageBackground style={{flexGrow: 1,
+                alignItems:'center',
+                justifyContent:'center'}} source={require('../assets/watchlist_background.png')}>
+
+                    <View style={{
                         backgroundColor: '#FFF',
                         borderRadius: 25,
-                        justifyContent: 'flex-end',
-                        marginVertical: 20,
-                        marginHorizontal: 10
+                        alignItems:'center',
+                        justifyContent:'center'
                     }}>
 
-                        <Text category={'h4'} style={{textAlign: 'center', paddingVertical: 20}}>Sign-in to make a
-                            Post</Text>
+                        <Text category={'h4'} style={{textAlign: 'center', paddingVertical: 50, paddingHorizontal: 25}}>Sign-in to
+                            post and see recent posts!</Text>
 
-                    </SafeAreaView>
-                    <ScrollView>
-                        <Text style={{textAlign: 'center', marginTop: 25, marginBottom: 5}} category={'h2'}>Recent
-                            Posts <TouchableOpacity onPress={() => {
-                                getPost()
-                            }}><MaterialCommunityIcons size={20}
-                                                       name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
+                    </View>
 
-                        <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
-                                           animating={isVisible}></ActivityIndicator>
 
-                        <FlatList data={posts} renderItem={renderPosts}></FlatList>
 
-                    </ScrollView>
-
-                </ScrollView>
             </ImageBackground>
 
         )
