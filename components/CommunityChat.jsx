@@ -91,14 +91,15 @@ const CommunityChat = (props) => {
 
                 setDisplayNameMissing(false)
                 setPhotoURLMissing(false);
-                let emptyArray = [];
 
                 setIsVisible(true);
-                await db.collection("CommunityPosts").get().then((querySnap) => {
-                    querySnap.forEach((doc) => emptyArray.push(doc.data()))
+                let stuff = await db.collection("CommunityPosts").get().then(yo => {
+                    return yo.docs;
                 })
 
-                setPosts(emptyArray)
+                let tempArray = stuff.map(doc => doc.data())
+
+                setPosts(tempArray)
                 setIsVisible(false);
                 await props.getUser();
 
