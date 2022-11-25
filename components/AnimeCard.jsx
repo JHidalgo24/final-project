@@ -90,7 +90,7 @@ let AnimeCard = (props) => {
     useEffect(() => {
         checkIfInDatabaseWatchlist()
         checkIfInDatabaseWatched()
-    })
+    },[])
 
     return (
 

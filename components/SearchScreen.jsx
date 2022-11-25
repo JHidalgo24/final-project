@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useState} from 'react'
 
 import {
     Button,
@@ -19,7 +19,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import {StatusBar} from "expo-status-bar";
 import {AnimeCard} from "./AnimeCard";
 import axios from "axios";
-
+import {useIsFocused} from "@react-navigation/native";
 
 let renderIcon = () => {
     return (<MaterialCommunityIcons color='#36446E' name="magnify" size={20}/>)
@@ -30,6 +30,9 @@ let renderIcon = () => {
 
 
 let SearchScreen = (props) => {
+    
+    const isFocused = useIsFocused();
+
     const renderItem = ({item}) => (<View style={{flexDirection: 'column', width: "100%", marginBottom: 10}}>
         <AnimeCard user={props.user} item={item}></AnimeCard>
     </View>);
@@ -43,10 +46,6 @@ let SearchScreen = (props) => {
     let [lewdStuff, setLewdStuff] = useState(false);
 
 
-    useEffect(() => {
-
-    })
-
 
     const SearchAnime = async () => {
         let statusCode = 0;
@@ -57,10 +56,12 @@ let SearchScreen = (props) => {
             if (lewdStuff) {
                 paramsStuff = {
                     q: search,
+                    limit:10
                 }
             } else {
                 paramsStuff = {
                     q: search, sfw: true,
+                    limit:10
                 }
             }
             let response = await axios.get(url, {
@@ -90,67 +91,67 @@ let SearchScreen = (props) => {
     return (
 
         <ImageBackground style={{flexGrow: 1}} source={startingImage}>
-            <ScrollView>
+            {isFocused ? <ScrollView>
 
-                <SafeAreaView style={styles.containerRow}>
-                    <Input onChangeText={(x) => {
-                        setSearch(x)
-                    }} accessoryRight={renderIcon}
-                           style={{
-                               marginTop: 10,
-                               width: '75%',
-                               maxWidth: '70%',
-                               marginRight: 10,
-                               fontStyle: 'italic',
-                               borderRadius: 8,
-                               borderWidth: 1,
-                               borderColor: '#000'
-                           }}
-                           placeholder='ex. Naruto, Bleach, One Piece'></Input>
-                    <TouchableOpacity onPress={() => {
-                        SearchAnime()
-                    }} style={{
-                        maxWidth: '25%', width: '25%', backgroundColor: '#FFC1D3', borderRadius: 50, marginTop: 10
-                    }}><Text style={{color: 'white', padding: 10, textAlign: 'center'}}>Search</Text></TouchableOpacity>
+<SafeAreaView style={styles.containerRow}>
+    <Input onChangeText={(x) => {
+        setSearch(x)
+    }} accessoryRight={renderIcon}
+           style={{
+               marginTop: 10,
+               width: '75%',
+               maxWidth: '70%',
+               marginRight: 10,
+               fontStyle: 'italic',
+               borderRadius: 8,
+               borderWidth: 1,
+               borderColor: '#000'
+           }}
+           placeholder='ex. Naruto, Bleach, One Piece'></Input>
+    <TouchableOpacity onPress={() => {
+        SearchAnime()
+    }} style={{
+        maxWidth: '25%', width: '25%', backgroundColor: '#FFC1D3', borderRadius: 50, marginTop: 10
+    }}><Text style={{color: 'white', padding: 10, textAlign: 'center'}}>Search</Text></TouchableOpacity>
 
-                </SafeAreaView>
+</SafeAreaView>
 
 
-                <View>
-                    <SafeAreaView>
-                        <SafeAreaView style={{
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginLeft: 10,
-                            flexDirection: 'row',
-                            marginVertical: 0,
-                            paddingVertical: 0
-                        }}>
-                            <Text style={{fontWeight: 'bold', color: 'red', fontStyle: 'italic'}}>NSFW</Text>
-                            <Switch trackColor={{false: "#767577", true: "#EE8AF8"}}
-                                    thumbColor='#FFC1D3' value={lewdStuff}
-                                    onValueChange={() => setLewdStuff(!lewdStuff)}></Switch>
+<View>
+    <SafeAreaView>
+        <SafeAreaView style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: 10,
+            flexDirection: 'row',
+            marginVertical: 0,
+            paddingVertical: 0
+        }}>
+            <Text style={{fontWeight: 'bold', color: 'red', fontStyle: 'italic'}}>NSFW</Text>
+            <Switch trackColor={{false: "#767577", true: "#EE8AF8"}}
+                    thumbColor='#FFC1D3' value={lewdStuff}
+                    onValueChange={() => setLewdStuff(!lewdStuff)}></Switch>
 
-                        </SafeAreaView>
+        </SafeAreaView>
 
-                        <View style={styles.container}>
-                            {isVisible ? <ActivityIndicator color='#EE8AF8' size={'large'} hidesWhenStopped={true}
-                                                            animating={isVisible}></ActivityIndicator> : null}
-                            {nothingFound ? <View style={{flexDirection: 'row'}}><Text category={'h3'}>Nothing was
-                                Found </Text><Image
-                                style={{width: 40, height: 40}}
-                                source={require('../assets/panic.gif')}></Image></View> : <Text></Text>}
-                        </View>
+        <View style={styles.container}>
+            {isVisible ? <ActivityIndicator color='#EE8AF8' size={'large'} hidesWhenStopped={true}
+                                            animating={isVisible}></ActivityIndicator> : null}
+            {nothingFound ? <View style={{flexDirection: 'row'}}><Text category={'h3'}>Nothing was
+                Found </Text><Image
+                style={{width: 40, height: 40}}
+                source={require('../assets/panic.gif')}></Image></View> : <Text></Text>}
+        </View>
 
-                        <FlatList
-                            maxToRenderPerBatch={5}
-                            data={stuff}
-                            renderItem={renderItem}
-                        />
+        <FlatList
+            maxToRenderPerBatch={5}
+            data={stuff}
+            renderItem={renderItem}
+        />
 
-                    </SafeAreaView>
-                </View>
-            </ScrollView>
+    </SafeAreaView>
+</View>
+</ScrollView> : null }
 
         </ImageBackground>
 

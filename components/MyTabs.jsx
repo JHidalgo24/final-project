@@ -7,6 +7,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {StyleSheet} from "react-native";
 import {LoginPage} from "./LoginPage";
 import {CommunityChat} from "./CommunityChat";
+import { WatchedScreen } from "./WatchedScreen";
 import {useEffect} from "react";
 
 
@@ -14,16 +15,14 @@ const Tab = createBottomTabNavigator();
 
 let  MyTabs = (props) => {
 
-    useEffect(() => {
-        props.getUser()
-    },[])
+
 
     if (props.user !== null){
         return (
-            <Tab.Navigator style={styles.navigator} screenOptions={{
+            <Tab.Navigator detachInactiveScreens={true} style={styles.navigator}  screenOptions={{
                 tabBarActiveTintColor: '#EE8AF8',
             }}>
-                <Tab.Screen   options={{
+                <Tab.Screen options={{
                     tabBarLabel: 'Home',
                     headerStyle:{
                         backgroundColor:'#FFC1D3'
@@ -44,8 +43,19 @@ let  MyTabs = (props) => {
                         <MaterialCommunityIcons name="magnify" color={color} size={size} />
                     ),
                 }} name="Search" children={() => <SearchScreen getUser={props.getUser} user={props.user}></SearchScreen>} />
+
+<Tab.Screen options={{
+                    tabBarLabel: 'Watched',headerStyle:{
+                        backgroundColor:'#FFC1D3'
+                    },
+                    headerTintColor:'#000'
+                    ,
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="check-bold" color={color} size={size} />
+                    ),
+                }} name="Watched" children={() => <WatchedScreen getUser={props.getUser} user={props.user}></WatchedScreen>} />
                 <Tab.Screen options={{
-                    tabBarLabel: 'My Watchlist',headerStyle:{
+                    tabBarLabel: 'Watchlist',headerStyle:{
                         backgroundColor:'#FFC1D3'
                     },
                     headerTintColor:'#000'
@@ -54,8 +64,9 @@ let  MyTabs = (props) => {
                         <MaterialCommunityIcons name="filmstrip-box-multiple" color={color} size={size} />
                     ),
                 }} name="Watchlist" children={() => <WatchlistScreen user={props.user} getUser={props.getUser}></WatchlistScreen>} />
+                
                 <Tab.Screen options={{
-                    tabBarLabel: 'Community Chat',headerStyle:{
+                    tabBarLabel: 'Community',headerStyle:{
                         backgroundColor:'#FFC1D3'
                     },
                     headerTintColor:'#000'

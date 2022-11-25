@@ -17,7 +17,7 @@ let renderThingy = ({ item }) => {
     )
 }
 
-let WatchlistScreen = (props) => {
+let WatchedScreen = (props) => {
 
     const isFocused = useIsFocused();
 
@@ -32,7 +32,7 @@ let WatchlistScreen = (props) => {
 
     
         setIsVisible(true)
-        let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watchlist').get().then(yo => {
+        let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watched').get().then(yo => {
             return yo.docs;
         })
 
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export { WatchlistScreen };
+export { WatchedScreen };

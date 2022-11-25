@@ -20,7 +20,7 @@ const PostCard = (props) => {
 
         setColor(colorArray[number]);
 
-    })
+    },[])
 
 
     return (

@@ -49,16 +49,17 @@ let AccountScreen = (props) => {
     let [signUpError, setSignUpError] = useState();
     let [loginError, setLoginError] = useState();
 
-
-    useEffect(() => {
-        let setUserThingy = () => {
-            if (props.user !== null){
-                setUser(props.user)
-                setUserSignedIn(true)
-            }
+    let setUserThingy = () => {
+        if (props.user !== null){
+            setUser(props.user)
+            setUserSignedIn(true)
         }
+    }
+    
+    useEffect(() => {
+  
         setUserThingy()
-    })
+    },[])
 
     let LoginWithEmailandPassword = async (email, password) => {
         let provider = await firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {

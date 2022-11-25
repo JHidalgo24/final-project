@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, SafeAreaView, View, Button, ImageBackground} from 'react-native';
+import {StyleSheet, SafeAreaView, View, Button, ImageBackground, ActivityIndicator} from 'react-native';
 import {HomeScreen} from './components/HomeScreen'
 import { SearchScreen } from './components/SearchScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,15 +15,20 @@ import {useFonts} from "expo-font";
 import {firebase} from "./firebaseConfig";
 import User from "./Models/User";
 import {useEffect, useState} from "react";
+import { LogBox } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
+LogBox.ignoreLogs(['VirtualizedLists should never be nested inside plain ScrollViews with the same orientation because it can break windowing and other functionality - use another VirtualizedList-backed container instead.',
+"AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'"]);//Ignore all log notifications
 export default function App() {
 
 
 
+let [isVisible, setIsVisible] = useState(false)
+
   let getUser = async () => {
+    setIsVisible(true)
     await firebase.auth().onAuthStateChanged(x => {
       if (x) {
         setUser(new User(x))
@@ -31,7 +36,15 @@ export default function App() {
         setUser(null)
       }
     })
+    setIsVisible(false)
   }
+
+
+  useEffect(()=>{
+    
+    getUser()
+    
+  },[])
 
 
   let [user, setUser] = useState(null);

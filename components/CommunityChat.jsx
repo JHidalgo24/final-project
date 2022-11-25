@@ -43,7 +43,8 @@ const CommunityChat = (props) => {
     }
 
     let addPost = async () => {
-        if (props.user.displayName !== "" && props.user.photoURL !== "") {
+        setIsVisible(true)
+        if (props.user !== null) {
             let userThingy = firebase.auth().currentUser;
             await db.collection('CommunityPosts').add({
                 PostTitle: title, PostContent: content, uid: userThingy.uid, displayName:userThingy.displayName,userImage:userThingy.photoURL,email:userThingy.email
@@ -69,6 +70,7 @@ const CommunityChat = (props) => {
 
         }
         await getPost();
+        setIsVisible(false)
     }
 
     let getPost = async () => {
@@ -110,13 +112,26 @@ const CommunityChat = (props) => {
         }
 
 
-    }, [])
+    }, [isFocused])
 
 
 
+
+if(isFocused === false){
+    return (<View></View>)
+}
+
+    if(isVisible ){
+return(
+    <ImageBackground style={{ flexGrow: 1, alignContent:'center', justifyContent:'center' }} source={require('../assets/watchlist_background.png')} >
+    <ActivityIndicator  size={100} color={'#FFC1D3'}></ActivityIndicator>
+</ImageBackground>
+)
+    }else{
         return (
-            <View>
-            { isFocused ?  <ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+            
+            <ImageBackground  style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+            { isFocused ? 
                     <ScrollView>
                         <SafeAreaView style={{
                             backgroundColor: '#FFF',
@@ -157,17 +172,18 @@ const CommunityChat = (props) => {
                                 }}><MaterialCommunityIcons size={20}
                                                            name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
 
-                            <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
-                                               animating={isVisible}></ActivityIndicator>
+
 
                             <FlatList data={posts} renderItem={renderPosts}></FlatList>
 
                         </ScrollView>
 
-                    </ScrollView>
-                </ImageBackground> : null}
-            </View>
+                    </ScrollView>: null}
+                </ImageBackground>
         )
+    }
+
+
 
 }
 
