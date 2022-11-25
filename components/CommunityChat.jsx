@@ -16,7 +16,7 @@ import {
 } from "react-native"
 import {ApplicationProvider, Card, Layout, Text} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import {Link} from "@react-navigation/native";
+import {Link, useIsFocused} from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {PostCard} from "./PostCard";
 import {auth, db, firebase} from "../firebaseConfig";
@@ -32,7 +32,7 @@ const CommunityChat = (props) => {
     let [isVisible, setIsVisible] = useState(false)
     let [displayNameMissing, setDisplayNameMissing] = useState(false);
     let [photoURLMissing, setPhotoURLMissing] = useState(false);
-
+    let isFocused = useIsFocused();
 
     let renderPosts = ({item}) => {
         return (<View style={{width: '100%'}}>
@@ -113,81 +113,62 @@ const CommunityChat = (props) => {
     }, [])
 
 
-    if (props.user === null) {
+
         return (
-            <ImageBackground style={{flexGrow: 1,
-                alignItems:'center',
-                justifyContent:'center'}} source={require('../assets/watchlist_background.png')}>
+            <View>
+            { isFocused ?  <ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+                    <ScrollView>
+                        <SafeAreaView style={{
+                            backgroundColor: '#FFF',
+                            borderRadius: 25,
+                            justifyContent: 'flex-end',
+                            marginVertical: 20,
+                            marginHorizontal: 10,
+                            borderColor: '#FFC1D3',
+                            borderWidth: 2
+                        }}>
 
-                    <View style={{
-                        backgroundColor: '#FFF',
-                        borderRadius: 25,
-                        alignItems:'center',
-                        justifyContent:'center'
-                    }}>
+                            <Text category={'h4'} style={{textAlign: 'center', paddingTop: 20}}>Make a post</Text>
+                            <TextInput value={title} onChangeText={(x) => {
+                                setTitle(x)
+                            }} style={styles.inputItem} placeholder='Post Title'></TextInput>
+                            <TextInput value={content} onChangeText={(x) => {
+                                setContent(x)
+                            }} multiline={true} style={styles.postContent} placeholder='Content'></TextInput>
+                            {displayNameMissing ?
+                                <Text style={styles.missingInfo}>You don't have a name for your account. Set one in the Account Page</Text> : null}
+                            {photoURLMissing ? <Text style={styles.missingInfo}>You are Missing an image please add one to your account</Text> : null}
+                            <TouchableOpacity><Text style={{
+                                color: '#FFF',
+                                paddingHorizontal: 35,
+                                paddingVertical: 15,
+                                backgroundColor: '#FFC1D3',
+                                margin: 30,
+                                borderRadius: 30,
 
-                        <Text category={'h4'} style={{textAlign: 'center', paddingVertical: 50, paddingHorizontal: 25}}>Sign-in to
-                            post and see recent posts!</Text>
+                            }} onPress={() => {
+                                addPost()
+                            }}>Post</Text></TouchableOpacity>
+                        </SafeAreaView>
+                        <ScrollView>
+                            <Text style={{textAlign: 'center', marginTop: 15, marginBottom: 0}} category={'h2'}>Recent
+                                Posts <TouchableOpacity onPress={() => {
+                                    getPost()
+                                }}><MaterialCommunityIcons size={20}
+                                                           name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
 
-                    </View>
+                            <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
+                                               animating={isVisible}></ActivityIndicator>
 
+                            <FlatList data={posts} renderItem={renderPosts}></FlatList>
 
+                        </ScrollView>
 
-            </ImageBackground>
-
+                    </ScrollView>
+                </ImageBackground> : null}
+            </View>
         )
-    } else {
-        return (<ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
-            <ScrollView>
-                <SafeAreaView style={{
-                    backgroundColor: '#FFF',
-                    borderRadius: 25,
-                    justifyContent: 'flex-end',
-                    marginVertical: 20,
-                    marginHorizontal: 10,
-                    borderColor: '#FFC1D3',
-                    borderWidth: 2
-                }}>
 
-                    <Text category={'h4'} style={{textAlign: 'center', paddingTop: 20}}>Make a post</Text>
-                    <TextInput value={title} onChangeText={(x) => {
-                        setTitle(x)
-                    }} style={styles.inputItem} placeholder='Post Title'></TextInput>
-                    <TextInput value={content} onChangeText={(x) => {
-                        setContent(x)
-                    }} multiline={true} style={styles.postContent} placeholder='Content'></TextInput>
-                    {displayNameMissing ?
-                        <Text style={styles.missingInfo}>You don't have a name for your account. Set one in the Account Page</Text> : null}
-                    {photoURLMissing ? <Text style={styles.missingInfo}>You are Missing an image please add one to your account</Text> : null}
-                    <TouchableOpacity><Text style={{
-                        color: '#FFF',
-                        paddingHorizontal: 35,
-                        paddingVertical: 15,
-                        backgroundColor: '#FFC1D3',
-                        margin: 30,
-                        borderRadius: 30,
-
-                    }} onPress={() => {
-                        addPost()
-                    }}>Post</Text></TouchableOpacity>
-                </SafeAreaView>
-                <ScrollView>
-                    <Text style={{textAlign: 'center', marginTop: 15, marginBottom: 0}} category={'h2'}>Recent
-                        Posts <TouchableOpacity onPress={() => {
-                            getPost()
-                        }}><MaterialCommunityIcons size={20}
-                                                   name={'refresh'}></MaterialCommunityIcons></TouchableOpacity></Text>
-
-                    <ActivityIndicator color='#000' size={'large'} hidesWhenStopped={true}
-                                       animating={isVisible}></ActivityIndicator>
-
-                    <FlatList data={posts} renderItem={renderPosts}></FlatList>
-
-                </ScrollView>
-
-            </ScrollView>
-        </ImageBackground>)
-    }
 }
 
 const styles = StyleSheet.create({

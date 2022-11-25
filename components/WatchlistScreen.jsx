@@ -6,6 +6,7 @@ import {AnimeCard} from "./AnimeCard";
 import {db} from "../firebaseConfig";
 import {WatchlistAnimeCard} from "./WatchlistAnimeCard";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import {useIsFocused} from "@react-navigation/native";
 
 
 let renderThingy = ({item}) => {
@@ -15,6 +16,8 @@ let renderThingy = ({item}) => {
 }
 
 let WatchlistScreen = (props) => {
+
+    const isFocused = useIsFocused();
 
     let [watchlistItems, setWatchlistItems] = useState([])
 
@@ -26,56 +29,34 @@ let WatchlistScreen = (props) => {
             return yo.docs;
         })
 
-
-        // let tempArray = watchlistStuff.forEach(doc => {
-        //     tempArray.push(doc.data())
-        // })
-
         let tempArray = watchlistStuff.map(doc => doc.data())
 
         setWatchlistItems(tempArray)
     }
     useEffect(() => {
 
-        if (props.user !== null) {
-            getWatchlist()
-        }
+        getWatchlist()
+
     })
 
 
-    if (props.user !== null) {
+
         return (
             <ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
 
-                <SafeAreaView><TouchableOpacity><Text style={{textAlign: 'center', color: '#CCC', margin: 15}}
-                                                      category={'h4'}>Refresh <MaterialCommunityIcons size={25}
-                                                                                                      name={'refresh'}></MaterialCommunityIcons>
-                </Text></TouchableOpacity>
+                <SafeAreaView>
 
 
-                    <FlatList windowSize={10} removeClippedSubviews={true} updateCellsBatchingPeriod={10}
-                              initialNumToRender={5} maxToRenderPerBatch={5} data={watchlistItems}
-                              renderItem={renderThingy}></FlatList>
+
+                    {isFocused ? <FlatList windowSize={10} removeClippedSubviews={true} updateCellsBatchingPeriod={10}
+                                           initialNumToRender={5} maxToRenderPerBatch={5} data={watchlistItems}
+                                           renderItem={renderThingy}></FlatList> : null}
 
 
                 </SafeAreaView>
             </ImageBackground>
 
         )
-    } else {
-        return (
-            <ImageBackground style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
-                <View style={styles.container}>
-                    <Text category='h6' style={styles.bigText}>You aren't signed in yet </Text>
-                    <Image source={require('../assets/ChiSilly.png')} resizeMode={'contain'} resizeMethod={'scale'}
-                           style={{width: 50}}></Image>
-
-                </View>
-            </ImageBackground>
-
-        )
-
-    }
 
 }
 
