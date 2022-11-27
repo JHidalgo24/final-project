@@ -9,7 +9,7 @@ import {Link} from "@react-navigation/native";
 const HomeScreen = ({navigation}) => {
 
 
-    return (<ImageBackground source={require('../assets/wallpaper.jpg')}>
+    return (<ImageBackground source={require('../../assets/wallpaper.jpg')}>
         <ScrollView>
             <View>
 
@@ -18,7 +18,7 @@ const HomeScreen = ({navigation}) => {
                     Welcome to my Anime Watchlist App
                 </Text>
 
-                <Image source={require('../assets/anya-pointing-at-tv.jpg')} style={{
+                <Image source={require('../../assets/anya-pointing-at-tv.jpg')} style={{
                     height: 300, flex: 1, marginHorizontal: 10, width: null, borderRadius: 25
                 }}></Image>
                 <Card style={styles.card}>
@@ -31,7 +31,7 @@ const HomeScreen = ({navigation}) => {
                         keep track. You can also mark your animes as already watched.
                     </Text>
                 </Card>
-                <Image source={require('../assets/anime-watching-tv.jpeg')} style={{
+                <Image source={require('../../assets/anime-watching-tv.jpeg')} style={{
                     height: 300, flex: 1, marginHorizontal: 10, width: null, borderRadius: 25
                 }}></Image>
                 <Card style={styles.card}>

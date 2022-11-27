@@ -18,10 +18,10 @@ import {ApplicationProvider, Card, Layout, Text} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import {Link, useIsFocused} from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {PostCard} from "./PostCard";
-import {auth, db, firebase} from "../firebaseConfig";
+import {PostCard} from "../Cards/PostCard";
+import {auth, db, firebase} from "../../configs/firebaseConfig";
 
-import User from "../Models/User";
+import User from "../../Models/User";
 
 
 const CommunityChat = (props) => {
@@ -123,14 +123,14 @@ if(isFocused === false){
 
     if(isVisible ){
 return(
-    <ImageBackground style={{ flexGrow: 1, alignContent:'center', justifyContent:'center' }} source={require('../assets/watchlist_background.png')} >
+    <ImageBackground style={{ flexGrow: 1, alignContent:'center', justifyContent:'center' }} source={require('../../assets/wallpaper.jpg')} >
     <ActivityIndicator  size={100} color={'#FFC1D3'}></ActivityIndicator>
 </ImageBackground>
 )
     }else{
         return (
             
-            <ImageBackground  style={{flexGrow: 1}} source={require('../assets/watchlist_background.png')}>
+            <ImageBackground  style={{flexGrow: 1}} source={require('../../assets/wallpaper.jpg')}>
             { isFocused ? 
                     <ScrollView>
                         <SafeAreaView style={{

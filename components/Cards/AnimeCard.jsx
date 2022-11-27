@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     SafeAreaView, StyleSheet, TouchableOpacity, View, Button, ImageBackground, Image, ScrollView, ActivityIndicator
@@ -7,7 +7,7 @@ import {
     Card, Layout, ButtonGroup, Input, Modal, Text, Drawer, DrawerItem, ModalPanel, Divider
 } from "@ui-kitten/components";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {db} from "../firebaseConfig";
+import { db } from "../../configs/firebaseConfig";
 
 
 let AnimeCard = (props) => {
@@ -21,7 +21,7 @@ let AnimeCard = (props) => {
 
         let idWatchlist = null;
 
-        if (props.user !== null){
+        if (props.user !== null) {
             let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watchlist').get().then(yo => {
                 return yo.docs;
             })
@@ -43,7 +43,7 @@ let AnimeCard = (props) => {
 
         let idWatched = null;
 
-        if (props.user !== null){
+        if (props.user !== null) {
             let watchedList = await db.collection('Users').doc(props.user.uid).collection('watched').get().then(yo => {
                 return yo.docs;
             })
@@ -90,67 +90,67 @@ let AnimeCard = (props) => {
     useEffect(() => {
         checkIfInDatabaseWatchlist()
         checkIfInDatabaseWatched()
-    },[])
+    }, [])
 
     return (
 
-        <View style={{marginVertical: 5}}>
-            <Text style={{textAlign: 'center', paddingBottom: 20}} category='h5'>
+        <View style={{ marginVertical: 5 }}>
+            <Text style={{ textAlign: 'center', paddingBottom: 20 }} category='h5'>
                 {props.item.title}
             </Text>
 
             <View>
                 <Image resizeMethod={'scale'}
-                       style={styles.tinyLogo}
-                       source={{
-                           uri: `${props.item.images.jpg.large_image_url}`
-                       }}
+                    style={styles.tinyLogo}
+                    source={{
+                        uri: `${props.item.images.jpg.large_image_url}`
+                    }}
                 />
 
-                <View style={{flexDirection: 'column'}}>
-                    {isVisible ? <ActivityIndicator animating={isVisible} style={{margin: 10}} size={40}
-                                                    color={'#EE8AF8'}></ActivityIndicator> : null}
+                <View style={{ flexDirection: 'column' }}>
+                    {isVisible ? <ActivityIndicator animating={isVisible} style={{ margin: 10 }} size={40}
+                        color={'#EE8AF8'}></ActivityIndicator> : null}
                     <View style={styles.buttonGroupThing} level='1'>
 
                         <TouchableOpacity color='#EE8AF8' onPress={() => {
                             setVisible(true)
                         }}><Text style={styles.buttonText}>More Info <MaterialCommunityIcons
-                            name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity>
+                            name='information'></MaterialCommunityIcons></Text></TouchableOpacity>
 
-                        {inWatched || props.user === null  ? <TouchableOpacity color='#EE8AF8' onPress={() => {
-                                addToWatched()
-                            }} disabled={props.user === null || inWatched}><Text
-                                style={styles.buttonTextDisabled}>Watched <MaterialCommunityIcons
+                        {inWatched || props.user === null ? <TouchableOpacity color='#EE8AF8' onPress={() => {
+                            addToWatched()
+                        }} disabled={props.user === null || inWatched}><Text
+                            style={styles.buttonTextDisabled}>Watched <MaterialCommunityIcons
                                 name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity> :
                             <TouchableOpacity color='#EE8AF8' onPress={() => {
                                 addToWatched()
                             }} disabled={props.user === null || inWatched}><Text
                                 style={styles.buttonText}>Watched <MaterialCommunityIcons
-                                name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity>}
-                        {inWatchlist || props.user === null   ? <TouchableOpacity color='#EE8AF8' onPress={() => {
-                                addToWatchList()
-                            }} disabled={props.user === null || inWatchlist}><Text
-                                style={styles.buttonTextDisabled}>WatchList <MaterialCommunityIcons
+                                    name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity>}
+                        {inWatchlist || props.user === null ? <TouchableOpacity color='#EE8AF8' onPress={() => {
+                            addToWatchList()
+                        }} disabled={props.user === null || inWatchlist}><Text
+                            style={styles.buttonTextDisabled}>WatchList <MaterialCommunityIcons
                                 name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity> :
                             <TouchableOpacity color='#EE8AF8' onPress={() => {
                                 addToWatchList()
                             }} disabled={props.user === null || inWatchlist}><Text
                                 style={styles.buttonText}>WatchList <MaterialCommunityIcons
-                                name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity>}
+                                    name='book-plus'></MaterialCommunityIcons></Text></TouchableOpacity>}
 
 
                     </View>
                 </View>
             </View>
             <ScrollView>
-                <Modal backdropStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}} visible={visible}>
+                <Modal backdropStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }} visible={visible}>
 
-                    <Card style={{borderRadius: 20}}>
+                    <Card style={{ borderRadius: 20 }}>
                         <ScrollView>
-                            <Text style={{textAlign: 'center'}} category={'h5'}>Description</Text>
+                            <Text style={{ textAlign: 'center' }} category={'h5'}>Description</Text>
                             <Divider></Divider>
                             <Text style={styles.description}
-                                  category={'h6'}>{props.item.synopsis === null ? "There was no synopsis provided for this title." : props.item.synopsis}</Text>
+                                category={'h6'}>{props.item.synopsis === null ? "There was no synopsis provided for this title." : props.item.synopsis}</Text>
 
                             <Button color='#EE8AF8' title='Close' style={styles.buttons} onPress={() => {
                                 setVisible(false)
@@ -202,4 +202,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export {AnimeCard};
+export { AnimeCard };

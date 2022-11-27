@@ -19,22 +19,23 @@ import * as eva from '@eva-design/eva';
 import {Link} from "@react-navigation/native";
 
 
-const SignupPage = (props) => {
+const LoginPage = (props) => {
 
     let [hidePassword, setHidePassword] = useState(false);
     let [password, setPassword] = useState();
     let [email, setEmail] = useState();
     let [isVisible, setIsVisible] = useState(false);
-    let SignupWithPassword = () => {
+    let loginWithPassword = async () => {
         setIsVisible(true)
-        props.SignUpWithEmailAndPassword(email, password)
+        await props.LoginWithEmailandPassword(email, password)
         setIsVisible(false)
     }
 
 
-    return (<ImageBackground style={styles.imageBackground} source={require('../assets/wallpaper.jpg')}>
+    return (
+        <ImageBackground style={styles.imageBackground} source={require('../../assets/wallpaper.jpg')}>
         <View style={styles.container}>
-            <Text style={{marginVertical: 15}} category={'h4'}>Sign Up</Text>
+            <Text style={{marginVertical: 15}} category={'h4'}>Sign In</Text>
             <TextInput onChangeText={(z) => {
                 setEmail(z)
             }} style={{
@@ -69,7 +70,8 @@ const SignupPage = (props) => {
                     thumbColor='#FFC1D3' value={hidePassword}
                     onValueChange={() => setHidePassword(!hidePassword)}></Switch>
 
-            <Text style={{color:'red', fontWeight:'bold'}} >{props.signUpError}</Text>
+            <Text style={{color:'red', fontWeight:'bold'}} >{props.loginError}</Text>
+            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
             <TouchableOpacity><Text style={{
                 color: '#FFF',
                 paddingHorizontal: 35,
@@ -79,10 +81,8 @@ const SignupPage = (props) => {
                 borderRadius: 30,
 
             }} onPress={() => {
-                SignupWithPassword()
+                loginWithPassword()
             }}>Sign-in</Text></TouchableOpacity>
-            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
-
         </View>
     </ImageBackground>)
 }
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
 
 });
 
-export {SignupPage}
+export {LoginPage}

@@ -1,18 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import {StyleSheet, SafeAreaView, View, Button, ImageBackground, ActivityIndicator} from 'react-native';
-import {HomeScreen} from './components/HomeScreen'
-import { SearchScreen } from './components/SearchScreen';
+import {HomeScreen} from './components/Screen/HomeScreen'
+import { SearchScreen } from './components/Screen/SearchScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AccountScreen } from './components/AccountScreen';
-import { WatchlistScreen } from './components/WatchlistScreen';
+import { AccountScreen } from './components/Screen/AccountScreen';
+import { WatchlistScreen } from './components/Screen/WatchlistScreen';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
-import {MyTabs} from "./components/MyTabs";
+import {MyTabs} from "./components/Fragments/MyTabs";
 import {useFonts} from "expo-font";
-import {firebase} from "./firebaseConfig";
+import {firebase} from "./configs/firebaseConfig";
 import User from "./Models/User";
 import {useEffect, useState} from "react";
 import { LogBox } from 'react-native';

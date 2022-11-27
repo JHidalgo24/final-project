@@ -15,12 +15,13 @@ import {
 } from "react-native"
 import {ApplicationProvider, Avatar, Card, Layout, ListItem, List, Text, Modal} from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import {LoginPage} from "./LoginPage";
-import {auth, firebase} from "../firebaseConfig";
-import User from "../Models/User";
-import {SignupPage} from "./SignupPage";
+import {LoginPage} from "../Fragments/LoginPage";
+import {auth, db, firebase} from "../../configs/firebaseConfig";
+import User from "../../Models/User";
+import {SignupPage} from "../Fragments/SignupPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
+import {useIsFocused} from "@react-navigation/native";
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -48,18 +49,44 @@ let AccountScreen = (props) => {
     let [imagePicked, setImagePicked] = useState();
     let [signUpError, setSignUpError] = useState();
     let [loginError, setLoginError] = useState();
+    let [watchedAnimes, setWatchedAnimes]  = useState(0);
+    let [watchlistedAnimes, setWatchlistedAnimes] = useState(0);
+    let isFocused = useIsFocused();
+
 
     let setUserThingy = () => {
-        if (props.user !== null){
+        if (props.user !== null) {
             setUser(props.user)
             setUserSignedIn(true)
         }
     }
-    
+
     useEffect(() => {
-  
+
         setUserThingy()
-    },[])
+
+        let getWatchlistLength =async  () => {
+
+            setWatchedAnimes('Calculating...')
+            setWatchlistedAnimes('Calculating...')
+
+            let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watchlist').get().then(yo => {
+                return yo.docs;
+            })
+
+            setWatchlistedAnimes(watchlistStuff.length)
+
+            let watchedListStuff = await db.collection('Users').doc(props.user.uid).collection('watched').get().then(yo => {
+                return yo.docs;
+            })
+
+            setWatchedAnimes(watchedListStuff.length)
+        }
+
+        getWatchlistLength();
+
+
+    }, [isFocused])
 
     let LoginWithEmailandPassword = async (email, password) => {
         let provider = await firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
@@ -98,7 +125,6 @@ let AccountScreen = (props) => {
         })
 
 
-
         props.getUser()
 
         setUser(props.user)
@@ -121,6 +147,8 @@ let AccountScreen = (props) => {
         setModalImage(!modalImage)
     }
 
+
+
     let logoutUser = async () => {
         await firebase.auth().signOut()
         setUserSignedIn(false)
@@ -128,8 +156,9 @@ let AccountScreen = (props) => {
     }
 
     if (userSignedIn) {
-        return (<ImageBackground style={{flexGrow:1}} source={require('../assets/watchlist_background.png')}>
-            <SafeAreaView>
+        return (
+            <ImageBackground style={{flexGrow: 1}} source={require('../../assets/wallpaper.jpg')}>
+
 
                 <SafeAreaView style={styles.containerImage}>
                     <TouchableOpacity onPress={() => {
@@ -148,7 +177,7 @@ let AccountScreen = (props) => {
                     <TouchableOpacity onPress={() => {
                         setModalImage(!modalImage)
                     }} style={{
-                        color: '#FFF',  borderRadius: 15, width: 200, marginVertical:10, textAlign: 'center'
+                        color: '#FFF', borderRadius: 15, width: 200, marginVertical: 10, textAlign: 'center'
                     }}><Text style={{textAlign: 'center', padding: 12, fontWeight: 'bold',}}>Change
                         Image <MaterialCommunityIcons size={20} name='pencil'/></Text></TouchableOpacity>
 
@@ -252,9 +281,23 @@ let AccountScreen = (props) => {
                     </Modal>
 
 
+
                 </SafeAreaView>
 
+                <View>
+                    <View style={{flexDirection:'row', justifyContent:'center'}}>
+                        <Card style={{marginHorizontal:5}}>
+                            <Text>Animes Watched</Text>
+                            <Text>{watchedAnimes}</Text>
 
+                        </Card>
+                        <Card style={{marginHorizontal:5}}>
+                            <Text>Animes in Watchlist</Text>
+                            <Text>{watchlistedAnimes}</Text>
+
+                        </Card>
+                    </View>
+                </View>
 
                 <SafeAreaView style={{justifyContent: 'center', alignItems: 'center'}}>
                     <TouchableOpacity
@@ -266,7 +309,7 @@ let AccountScreen = (props) => {
                         Out</Text></TouchableOpacity>
 
                 </SafeAreaView>
-            </SafeAreaView>
+
         </ImageBackground>)
     } else {
         return (<Tab.Navigator screenOptions={{
@@ -275,10 +318,11 @@ let AccountScreen = (props) => {
             }
         }}>
             <Tab.Screen SignUpWithEmailAndPassword={SignUpWithEmailAndPassword} name="Sign Up"
-                        children={() => <SignupPage signUpError={signUpError} SignUpWithEmailAndPassword={SignUpWithEmailAndPassword}/>}/>
+                        children={() => <SignupPage signUpError={signUpError}
+                                                    SignUpWithEmailAndPassword={SignUpWithEmailAndPassword}/>}/>
             <Tab.Screen LoginWithEmailandPassword={LoginWithEmailandPassword} name="Sign In"
                         children={() => <LoginPage loginError={loginError}
-                            LoginWithEmailandPassword={LoginWithEmailandPassword}></LoginPage>}></Tab.Screen>
+                                                   LoginWithEmailandPassword={LoginWithEmailandPassword}></LoginPage>}></Tab.Screen>
         </Tab.Navigator>)
     }
 

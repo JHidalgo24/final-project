@@ -2,22 +2,17 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, SafeAreaView, Image, StyleSheet, TouchableOpacity, View, ImageBackground, FlatList, ScrollView, ActivityIndicator } from "react-native"
 import { Input, Text } from "@ui-kitten/components";
-import { AnimeCard } from "./AnimeCard";
-import { db } from "../firebaseConfig";
-import { WatchlistAnimeCard } from "./WatchlistAnimeCard";
+import { AnimeCard } from "../Cards/AnimeCard";
+import { db } from "../../configs/firebaseConfig";
+import { WatchlistAnimeCard } from "../Cards/WatchlistAnimeCard";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useIsFocused } from "@react-navigation/native";
+import {WatchedAnimeCard} from "../Cards/WatchedAnimeCard";
 
 
-let renderThingy = ({ item }) => {
-    return (
-        <View>
-            <WatchlistAnimeCard item={item}></WatchlistAnimeCard>
-        </View>
-    )
-}
 
-let WatchlistScreen = (props) => {
+
+let WatchedScreen = (props) => {
 
     const isFocused = useIsFocused();
 
@@ -28,15 +23,28 @@ let WatchlistScreen = (props) => {
     let [tooMany, setTooMany] = useState(false);
     let [tooLittle, setTooLittle] = useState(false)
 
-    let getWatchlist = async () => {
+
+
+    let renderThingy = ({ item }) => {
+        return (
+            <View>
+                <View>
+                    <WatchedAnimeCard getWatched={getWatched} user={props.user} item={item}></WatchedAnimeCard>
+                </View>
+            </View>
+        )
+    }
+
+    
+    let getWatched = async () => {
 
     
         setIsVisible(true)
-        let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watchlist').get().then(yo => {
+        let watchlistStuff = await db.collection('Users').doc(props.user.uid).collection('watched').get().then(yo => {
             return yo.docs;
         })
 
-        let tempArray = await watchlistStuff.map(doc => doc.data())
+        let tempArray = await watchlistStuff.map(doc => doc)
 
 
 
@@ -86,7 +94,7 @@ let WatchlistScreen = (props) => {
     useEffect(() => {
 
         setCurrentItems(5)
-        getWatchlist()
+        getWatched()
 
     }, [isFocused])
 
@@ -95,14 +103,14 @@ let WatchlistScreen = (props) => {
     
     if(isVisible){
         return(
-            <ImageBackground style={{ flexGrow: 1, alignContent:'center', justifyContent:'center' }} source={require('../assets/watchlist_background.png')} >
+            <ImageBackground style={{ flexGrow: 1, alignContent:'center', justifyContent:'center' }} source={require('../../assets/wallpaper.jpg')} >
                     <ActivityIndicator  size={100} color={'#FFC1D3'}></ActivityIndicator>
             </ImageBackground>
         )
     }
     else{
         return (
-            <ImageBackground style={{ flexGrow: 1 }} source={require('../assets/watchlist_background.png')}>
+            <ImageBackground style={{ flexGrow: 1 }} source={require('../../assets/wallpaper.jpg')}>
                 <ScrollView >
     
     
@@ -113,9 +121,12 @@ let WatchlistScreen = (props) => {
                         initialNumToRender={5} maxToRenderPerBatch={5} data={currentWatchList}
                         renderItem={renderThingy}></FlatList>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
-                        <TouchableOpacity  onPress={() => getPreviousPage()} style={styles.buttonLeftThingy}><Text>Previous Page</Text></TouchableOpacity>
-    
-                        <TouchableOpacity onPress={() => getNextPage()} style={styles.buttonRightThingy}><Text>Next Page</Text></TouchableOpacity>
+
+                        {currentItems - 5 === 0 ? null : <TouchableOpacity  onPress={() => getPreviousPage()} style={styles.buttonLeftThingy}><Text>Previous Page</Text></TouchableOpacity> }
+
+
+                        { currentItems >= watchlistItems.length ?  null : <TouchableOpacity onPress={() => getNextPage()} style={styles.buttonRightThingy}><Text>Next Page</Text></TouchableOpacity> }
+
                     </View>
                     </View>  : null}
     
@@ -170,4 +181,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export { WatchlistScreen };
+export { WatchedScreen };

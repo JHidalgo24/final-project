@@ -1,13 +1,13 @@
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {HomeScreen} from "./HomeScreen";
-import {SearchScreen} from "./SearchScreen";
-import {WatchlistScreen} from "./WatchlistScreen";
-import {AccountScreen} from "./AccountScreen";
+import {HomeScreen} from "../Screen/HomeScreen";
+import {SearchScreen} from "../Screen/SearchScreen";
+import {WatchlistScreen} from "../Screen/WatchlistScreen";
+import {AccountScreen} from "../Screen/AccountScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {StyleSheet} from "react-native";
 import {LoginPage} from "./LoginPage";
-import {CommunityChat} from "./CommunityChat";
-import { WatchedScreen } from "./WatchedScreen";
+import {CommunityChat} from "../Screen/CommunityChat";
+import { WatchedScreen } from "../Screen/WatchedScreen";
 import {useEffect} from "react";
 
 

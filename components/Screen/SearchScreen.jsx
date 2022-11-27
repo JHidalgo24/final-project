@@ -17,7 +17,7 @@ import {
 import {Card, Divider, Input, ListItem, Spinner, Text, Toggle} from "@ui-kitten/components";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {StatusBar} from "expo-status-bar";
-import {AnimeCard} from "./AnimeCard";
+import {AnimeCard} from "../Cards/AnimeCard";
 import axios from "axios";
 import {useIsFocused} from "@react-navigation/native";
 
@@ -41,7 +41,7 @@ let SearchScreen = (props) => {
     let [stuff, setStuff] = useState([]);
     let [isVisible, setIsVisible] = useState(false)
     const url = 'https://api.jikan.moe/v4/anime/'
-    let [startingImage, setStartingImage] = useState(require("../assets/wallpaper.jpg"))
+    let [startingImage, setStartingImage] = useState(require("../../assets/wallpaper.jpg"))
     let [nothingFound, setNothingFound] = useState(false);
     let [lewdStuff, setLewdStuff] = useState(false);
 
@@ -55,13 +55,11 @@ let SearchScreen = (props) => {
             setIsVisible(true);
             if (lewdStuff) {
                 paramsStuff = {
-                    q: search,
-                    limit:10
+                    q: `${search}`,
                 }
             } else {
                 paramsStuff = {
-                    q: search, sfw: true,
-                    limit:10
+                    q: `${search}`, sfw: true,
                 }
             }
             let response = await axios.get(url, {
@@ -69,14 +67,14 @@ let SearchScreen = (props) => {
             }).then((res) => {
                 setStuff(res.data.data);
                 return res;
-            });
+            }).catch((err) => {console.log(err)});
 
 
             if (response.data.data.length === 0) {
-                setStartingImage(require('../assets/nothing-found.png'))
+                setStartingImage(require('../../assets/nothing-found.png'))
                 setNothingFound(true);
             } else {
-                setStartingImage(require('../assets/wallpaper.jpg'))
+                setStartingImage(require('../../assets/wallpaper.jpg'))
                 setNothingFound(false);
             }
         } catch (ex) {
@@ -140,7 +138,7 @@ let SearchScreen = (props) => {
             {nothingFound ? <View style={{flexDirection: 'row'}}><Text category={'h3'}>Nothing was
                 Found </Text><Image
                 style={{width: 40, height: 40}}
-                source={require('../assets/panic.gif')}></Image></View> : <Text></Text>}
+                source={require('../../assets/panic.gif')}></Image></View> : <Text></Text>}
         </View>
 
         <FlatList

@@ -19,23 +19,22 @@ import * as eva from '@eva-design/eva';
 import {Link} from "@react-navigation/native";
 
 
-const LoginPage = (props) => {
+const SignupPage = (props) => {
 
     let [hidePassword, setHidePassword] = useState(false);
     let [password, setPassword] = useState();
     let [email, setEmail] = useState();
     let [isVisible, setIsVisible] = useState(false);
-    let loginWithPassword = async () => {
+    let SignupWithPassword = () => {
         setIsVisible(true)
-        await props.LoginWithEmailandPassword(email, password)
+        props.SignUpWithEmailAndPassword(email, password)
         setIsVisible(false)
     }
 
 
-    return (
-        <ImageBackground style={styles.imageBackground} source={require('../assets/wallpaper.jpg')}>
+    return (<ImageBackground style={styles.imageBackground} source={require('../../assets/wallpaper.jpg')}>
         <View style={styles.container}>
-            <Text style={{marginVertical: 15}} category={'h4'}>Sign In</Text>
+            <Text style={{marginVertical: 15}} category={'h4'}>Sign Up</Text>
             <TextInput onChangeText={(z) => {
                 setEmail(z)
             }} style={{
@@ -70,8 +69,7 @@ const LoginPage = (props) => {
                     thumbColor='#FFC1D3' value={hidePassword}
                     onValueChange={() => setHidePassword(!hidePassword)}></Switch>
 
-            <Text style={{color:'red', fontWeight:'bold'}} >{props.loginError}</Text>
-            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
+            <Text style={{color:'red', fontWeight:'bold'}} >{props.signUpError}</Text>
             <TouchableOpacity><Text style={{
                 color: '#FFF',
                 paddingHorizontal: 35,
@@ -81,8 +79,10 @@ const LoginPage = (props) => {
                 borderRadius: 30,
 
             }} onPress={() => {
-                loginWithPassword()
+                SignupWithPassword()
             }}>Sign-in</Text></TouchableOpacity>
+            {isVisible ? <ActivityIndicator animating={isVisible} hidesWhenStopped={true} color={'#FFC1D3'} size={100}></ActivityIndicator>:null}
+
         </View>
     </ImageBackground>)
 }
@@ -104,4 +104,4 @@ const styles = StyleSheet.create({
 
 });
 
-export {LoginPage}
+export {SignupPage}
