@@ -72,7 +72,7 @@ let  MyTabs = (props) => {
                     headerTintColor:'#000'
                     ,
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="message" color={color} size={size} />
+                        <MaterialCommunityIcons name="account-group" color={color} size={size} />
                     ),
                 }} name="Community Chat"  children={() => <CommunityChat getUser={props.getUser} user={props.user} ></CommunityChat>} />
                 <Tab.Screen options={{

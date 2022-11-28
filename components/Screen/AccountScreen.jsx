@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
     Button,
@@ -13,15 +13,15 @@ import {
     TouchableOpacity,
     TextInput
 } from "react-native"
-import {ApplicationProvider, Avatar, Card, Layout, ListItem, List, Text, Modal} from '@ui-kitten/components';
+import { ApplicationProvider, Avatar, Card, Layout, ListItem, List, Text, Modal } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-import {LoginPage} from "../Fragments/LoginPage";
-import {auth, db, firebase} from "../../configs/firebaseConfig";
+import { LoginPage } from "../Fragments/LoginPage";
+import { auth, db, firebase } from "../../configs/firebaseConfig";
 import User from "../../Models/User";
-import {SignupPage} from "../Fragments/SignupPage";
+import { SignupPage } from "../Fragments/SignupPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import {useIsFocused} from "@react-navigation/native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useIsFocused } from "@react-navigation/native";
 
 
 const Tab = createMaterialTopTabNavigator();
@@ -34,11 +34,11 @@ let AccountScreen = (props) => {
     })
 
 
-    const renderItem = ({item}) => (<ListItem>
-        <Text style={{fontWeight: 'bold'}}>{item}</Text>
+    const renderItem = ({ item }) => (<ListItem>
+        <Text style={{ fontWeight: 'bold' }}>{item}</Text>
     </ListItem>);
-    const renderFriends = ({item, index}) => (<ListItem>
-        <Text style={{fontWeight: 'bold'}}>{item.title} {index + 1}</Text>
+    const renderFriends = ({ item, index }) => (<ListItem>
+        <Text style={{ fontWeight: 'bold' }}>{item.title} {index + 1}</Text>
     </ListItem>);
     let [userSignedIn, setUserSignedIn] = useState(false)
     let [signUp, setSignUp] = useState(true);
@@ -49,7 +49,7 @@ let AccountScreen = (props) => {
     let [imagePicked, setImagePicked] = useState();
     let [signUpError, setSignUpError] = useState();
     let [loginError, setLoginError] = useState();
-    let [watchedAnimes, setWatchedAnimes]  = useState(0);
+    let [watchedAnimes, setWatchedAnimes] = useState(0);
     let [watchlistedAnimes, setWatchlistedAnimes] = useState(0);
     let isFocused = useIsFocused();
 
@@ -65,7 +65,7 @@ let AccountScreen = (props) => {
 
         setUserThingy()
 
-        let getWatchlistLength =async  () => {
+        let getWatchlistLength = async () => {
 
             setWatchedAnimes('Calculating...')
             setWatchlistedAnimes('Calculating...')
@@ -83,8 +83,10 @@ let AccountScreen = (props) => {
             setWatchedAnimes(watchedListStuff.length)
         }
 
-        getWatchlistLength();
+        if (props.user !== null) {
 
+            getWatchlistLength();
+        }
 
     }, [isFocused])
 
@@ -157,16 +159,16 @@ let AccountScreen = (props) => {
 
     if (userSignedIn) {
         return (
-            <ImageBackground style={{flexGrow: 1}} source={require('../../assets/wallpaper.jpg')}>
+            <ImageBackground style={{ flexGrow: 1 }} source={require('../../assets/wallpaper.jpg')}>
 
 
                 <SafeAreaView style={styles.containerImage}>
                     <TouchableOpacity onPress={() => {
                         setModalName(!modalName)
-                    }}><Text style={{marginTop: 20}}
-                             category={'h3'}>{user.displayName === '' ? "Set Name " : user.displayName}<MaterialCommunityIcons
-                        size={20} name='pencil'/> </Text></TouchableOpacity>
-                    <Text style={{marginTop: 20, marginBottom: 5, color: '#000'}} category='h6'>{user.email}</Text>
+                    }}><Text style={{ marginTop: 20 }}
+                        category={'h3'}>{user.displayName === '' ? "Set Name " : user.displayName}<MaterialCommunityIcons
+                                size={20} name='pencil' /> </Text></TouchableOpacity>
+                    <Text style={{ marginTop: 20, marginBottom: 5, color: '#000' }} category='h6'>{user.email}</Text>
                     <Image
                         resizeMethod={'resize'}
                         style={styles.avatar}
@@ -178,13 +180,13 @@ let AccountScreen = (props) => {
                         setModalImage(!modalImage)
                     }} style={{
                         color: '#FFF', borderRadius: 15, width: 200, marginVertical: 10, textAlign: 'center'
-                    }}><Text style={{textAlign: 'center', padding: 12, fontWeight: 'bold',}}>Change
-                        Image <MaterialCommunityIcons size={20} name='pencil'/></Text></TouchableOpacity>
+                    }}><Text style={{ textAlign: 'center', padding: 12, fontWeight: 'bold', }}>Change
+                        Image <MaterialCommunityIcons size={20} name='pencil' /></Text></TouchableOpacity>
 
-                    <Modal backdropStyle={{backgroundColor: 'rgba(0, 0, 0, .85)'}}
-                           style={{width: "100%", justifyContent: 'center', alignItems: 'center'}}
-                           visible={modalImage}>
-                        <Card style={{width: '90%', maxWidth: '90%', borderRadius: 20}}>
+                    <Modal backdropStyle={{ backgroundColor: 'rgba(0, 0, 0, .85)' }}
+                        style={{ width: "100%", justifyContent: 'center', alignItems: 'center' }}
+                        visible={modalImage}>
+                        <Card style={{ width: '90%', maxWidth: '90%', borderRadius: 20 }}>
                             <TextInput onChangeText={(x) => {
                                 setImagePicked(x)
                             }} placeholder={'Change Image URL'} style={{
@@ -231,10 +233,10 @@ let AccountScreen = (props) => {
                     </Modal>
 
 
-                    <Modal backdropStyle={{backgroundColor: 'rgba(0, 0, 0, .85)'}}
-                           style={{width: "100%", justifyContent: 'center', alignItems: 'center'}}
-                           visible={modalName}>
-                        <Card style={{width: '90%', maxWidth: '90%', borderRadius: 20}}>
+                    <Modal backdropStyle={{ backgroundColor: 'rgba(0, 0, 0, .85)' }}
+                        style={{ width: "100%", justifyContent: 'center', alignItems: 'center' }}
+                        visible={modalName}>
+                        <Card style={{ width: '90%', maxWidth: '90%', borderRadius: 20 }}>
                             <TextInput onChangeText={(x) => {
                                 setNamePicked(x)
                             }} placeholder={'Change Name'} style={{
@@ -285,13 +287,13 @@ let AccountScreen = (props) => {
                 </SafeAreaView>
 
                 <View>
-                    <View style={{flexDirection:'row', justifyContent:'center'}}>
-                        <Card style={{marginHorizontal:5}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Card style={{ marginHorizontal: 5 }}>
                             <Text>Animes Watched</Text>
                             <Text>{watchedAnimes}</Text>
 
                         </Card>
-                        <Card style={{marginHorizontal:5}}>
+                        <Card style={{ marginHorizontal: 5 }}>
                             <Text>Animes in Watchlist</Text>
                             <Text>{watchlistedAnimes}</Text>
 
@@ -299,30 +301,30 @@ let AccountScreen = (props) => {
                     </View>
                 </View>
 
-                <SafeAreaView style={{justifyContent: 'center', alignItems: 'center'}}>
+                <SafeAreaView style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <TouchableOpacity
-                        style={{backgroundColor: '#EE8AF8', borderRadius: 25, width: '30%', margin: 15}}
+                        style={{ backgroundColor: '#EE8AF8', borderRadius: 25, width: '30%', margin: 15 }}
                         onPress={() => {
                             logoutUser()
                         }}><Text
-                        style={{color: '#FFF', paddingHorizontal: 10, paddingVertical: 10, textAlign: 'center'}}>Log
-                        Out</Text></TouchableOpacity>
+                            style={{ color: '#FFF', paddingHorizontal: 10, paddingVertical: 10, textAlign: 'center' }}>Log
+                            Out</Text></TouchableOpacity>
 
                 </SafeAreaView>
 
-        </ImageBackground>)
+            </ImageBackground>)
     } else {
         return (<Tab.Navigator screenOptions={{
-            tabBarActiveTintColor: '#000', tabBarStyle: {backgroundColor: '#FFC1D3'}, tabBarIndicatorStyle: {
+            tabBarActiveTintColor: '#000', tabBarStyle: { backgroundColor: '#FFC1D3' }, tabBarIndicatorStyle: {
                 backgroundColor: '#CCC'
             }
         }}>
             <Tab.Screen SignUpWithEmailAndPassword={SignUpWithEmailAndPassword} name="Sign Up"
-                        children={() => <SignupPage signUpError={signUpError}
-                                                    SignUpWithEmailAndPassword={SignUpWithEmailAndPassword}/>}/>
+                children={() => <SignupPage signUpError={signUpError}
+                    SignUpWithEmailAndPassword={SignUpWithEmailAndPassword} />} />
             <Tab.Screen LoginWithEmailandPassword={LoginWithEmailandPassword} name="Sign In"
-                        children={() => <LoginPage loginError={loginError}
-                                                   LoginWithEmailandPassword={LoginWithEmailandPassword}></LoginPage>}></Tab.Screen>
+                children={() => <LoginPage loginError={loginError}
+                    LoginWithEmailandPassword={LoginWithEmailandPassword}></LoginPage>}></Tab.Screen>
         </Tab.Navigator>)
     }
 
@@ -350,4 +352,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export {AccountScreen};
+export { AccountScreen };
