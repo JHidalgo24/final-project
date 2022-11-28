@@ -1,16 +1,8 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import {
-  ActivityIndicator,
-  ImageBackground,
-  StyleSheet,
-  Switch,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Text } from "@ui-kitten/components";
+import {ActivityIndicator, ImageBackground, StyleSheet, Switch, TextInput, TouchableOpacity, View,} from "react-native";
+import {Text} from "@ui-kitten/components";
 
 const SignupPage = (props) => {
   let [hidePassword, setHidePassword] = useState(false);

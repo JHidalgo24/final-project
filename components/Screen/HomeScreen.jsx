@@ -1,13 +1,7 @@
 import React from "react";
 
-import {
-  Image,
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import { Card, Text } from "@ui-kitten/components";
+import {Image, ImageBackground, ScrollView, StyleSheet, View,} from "react-native";
+import {Card, Text} from "@ui-kitten/components";
 
 const HomeScreen = ({ navigation }) => {
   return (

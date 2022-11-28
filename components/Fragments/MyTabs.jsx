@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StyleSheet } from "react-native";
 import { CommunityChat } from "../Screen/CommunityChat";
 import { WatchedScreen } from "../Screen/WatchedScreen";
+import {MyAnimeLists} from "../Screen/MyAnimeLists";
 
 const Tab = createBottomTabNavigator();
 
@@ -58,32 +59,10 @@ let MyTabs = (props) => {
           )}
         />
 
+
         <Tab.Screen
           options={{
-            tabBarLabel: "Watched",
-            headerStyle: {
-              backgroundColor: "#FFC1D3",
-            },
-            headerTintColor: "#000",
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="check-bold"
-                color={color}
-                size={size}
-              />
-            ),
-          }}
-          name="Watched"
-          children={() => (
-            <WatchedScreen
-              getUser={props.getUser}
-              user={props.user}
-            ></WatchedScreen>
-          )}
-        />
-        <Tab.Screen
-          options={{
-            tabBarLabel: "Watchlist",
+            tabBarLabel: "My Anime",
             headerStyle: {
               backgroundColor: "#FFC1D3",
             },
@@ -96,12 +75,9 @@ let MyTabs = (props) => {
               />
             ),
           }}
-          name="Watchlist"
+          name="My Anime"
           children={() => (
-            <WatchlistScreen
-              user={props.user}
-              getUser={props.getUser}
-            ></WatchlistScreen>
+            <MyAnimeLists user={props.user} getUser={props.getUser}/>
           )}
         />
 

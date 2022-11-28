@@ -6,7 +6,7 @@ import { Card, Text } from "@ui-kitten/components";
 const PostCard = (props) => {
   let [color, setColor] = useState("#FFC1D3");
   let colorArray = ["#FFC1D3", "#9DE7E5", "#DCB6D5", "#B3B3F1", "#CEC2FF"];
-  useEffect(() => {F
+  useEffect(() => {
     let number = Math.floor(Math.random() * 5);
 
     setColor(colorArray[number]);

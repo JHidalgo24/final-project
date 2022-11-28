@@ -24,6 +24,9 @@ let WatchedScreen = (props) => {
   let [tooMany, setTooMany] = useState(false);
   let [tooLittle, setTooLittle] = useState(false);
 
+
+  
+
   let renderThingy = ({ item }) => {
     return (
       <View>
@@ -50,6 +53,19 @@ let WatchedScreen = (props) => {
       });
 
     let tempArray = await watchlistStuff.map((doc) => doc);
+
+    tempArray = tempArray.sort((a,b) => {
+      const nameA = a.data().title.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.data().title.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      // names must be equal
+      return 0;})
 
     let clone = tempArray.slice(0, 5);
     await setCurrentWatchlist(clone);
@@ -88,7 +104,7 @@ let WatchedScreen = (props) => {
   useEffect(() => {
     setCurrentItems(5);
     getWatched();
-  }, [isFocused]);
+  }, [  isFocused]);
 
   if (isVisible) {
     return (

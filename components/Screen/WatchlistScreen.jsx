@@ -47,7 +47,20 @@ let WatchlistScreen = (props) => {
         return yo.docs;
       });
 
-    let tempArray = await watchlistStuff.map((doc) => doc);
+    let tempArray = watchlistStuff.map((doc) => doc);
+
+    tempArray = tempArray.sort((a,b) => {
+      const nameA = a.data().title.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.data().title.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+
+      // names must be equal
+      return 0;})
 
     let clone = tempArray.slice(0, 5);
     await setCurrentWatchlist(clone);
