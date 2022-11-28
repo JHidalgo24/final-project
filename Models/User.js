@@ -1,4 +1,4 @@
-let User = function(firebaseUser){
+let User = function (firebaseUser) {
     let m = {
         displayName: '',
         email: '',
@@ -6,7 +6,7 @@ let User = function(firebaseUser){
         uid: '',
     }
 
-    if(firebaseUser){
+    if (firebaseUser) {
         m.displayName = firebaseUser.displayName ? firebaseUser.displayName : '';
         m.email = firebaseUser.email ? firebaseUser.email : '';
         m.photoURL = firebaseUser.photoURL ? firebaseUser.photoURL : '';
