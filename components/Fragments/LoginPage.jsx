@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginHorizontal: 20,
         borderColor: '#CCC',
-        borderWidth: 1
+        borderWidth: 1,
     }, inputContainer: {
         backgroundColor: 'white', borderRadius: 8, flexDirection: 'row', alignItems: 'center'
     },
