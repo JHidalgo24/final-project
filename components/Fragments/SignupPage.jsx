@@ -3,15 +3,31 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import {ActivityIndicator, ImageBackground, StyleSheet, Switch, TextInput, TouchableOpacity, View,} from "react-native";
 import {Text} from "@ui-kitten/components";
+import {firebase} from "../../configs/firebaseConfig";
 
 const SignupPage = (props) => {
   let [hidePassword, setHidePassword] = useState(false);
-  let [password, setPassword] = useState();
-  let [email, setEmail] = useState();
+  let [password, setPassword] = useState("");
+  let [email, setEmail] = useState("");
+  let [namePicked, setNamePicked] = useState("");
   let [isVisible, setIsVisible] = useState(false);
-  let SignupWithPassword = () => {
+
+  let SignupWithPassword = async () => {
     setIsVisible(true);
-    props.SignUpWithEmailAndPassword(email, password);
+    if (password !== "" && email !== ""){
+      await props.SignUpWithEmailAndPassword(email, password);
+
+      const userUpdate = await firebase.auth().currentUser;
+
+      await userUpdate.updateProfile({
+        displayName: namePicked,
+        photoURL:'https://i.pinimg.com/originals/ee/5e/3b/ee5e3b4fa159e76ca45a22bbac5658dd.jpg'
+      });
+
+      props.getUser()
+
+
+    }
     setIsVisible(false);
   };
 
@@ -24,6 +40,24 @@ const SignupPage = (props) => {
         <Text style={{ marginVertical: 15 }} category={"h4"}>
           Sign Up
         </Text>
+
+        <TextInput
+            onChangeText={(z) => {
+              setNamePicked(z);
+            }}
+            style={{
+              marginHorizontal: 15,
+              marginVertical: 15,
+              minWidth: "90%",
+              maxWidth: "90%",
+              borderWidth: 1,
+              borderRadius: 10,
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+            placeholder="Username"
+
+        ></TextInput>
         <TextInput
           onChangeText={(z) => {
             setEmail(z);

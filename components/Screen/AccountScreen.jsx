@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 
 import {Image, ImageBackground, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View,} from "react-native";
-import {Card, ListItem, Modal, Text} from "@ui-kitten/components";
+import {Card, Modal, Text} from "@ui-kitten/components";
 import {LoginPage} from "../Fragments/LoginPage";
 import {db, firebase} from "../../configs/firebaseConfig";
-import User from "../../Models/User";
 import {SignupPage} from "../Fragments/SignupPage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
@@ -13,28 +12,9 @@ import {useIsFocused} from "@react-navigation/native";
 const Tab = createMaterialTopTabNavigator();
 
 let AccountScreen = (props) => {
-    const data = ["Bleach", "Naruto", "Naruto:Shippuden"];
-    const friends = new Array(10).fill({
-        title: "Friend",
-    });
 
-    const renderItem = ({item}) => (
-        <ListItem>
-            <Text style={{fontWeight: "bold"}}>{item}</Text>
-        </ListItem>
-    );
-    const renderFriends = ({item, index}) => (
-        <ListItem>
-            <Text style={{fontWeight: "bold"}}>
-                {item.title} {index + 1}
-            </Text>
-        </ListItem>
-    );
-    let [userSignedIn, setUserSignedIn] = useState(false);
-    let [signUp, setSignUp] = useState(true);
     let [modalName, setModalName] = useState(false);
     let [modalImage, setModalImage] = useState(false);
-    let [user, setUser] = useState();
     let [namePicked, setNamePicked] = useState();
     let [imagePicked, setImagePicked] = useState();
     let [signUpError, setSignUpError] = useState();
@@ -45,8 +25,6 @@ let AccountScreen = (props) => {
 
     let setUserThingy = async () => {
         if (props.user !== null) {
-            setUser(props.user);
-            setUserSignedIn(true);
             await getWatchlistLength();
         }
     };
@@ -90,10 +68,7 @@ let AccountScreen = (props) => {
         let provider = await firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                var user = userCredential.user;
-                setUser(new User(user));
-                setUserSignedIn(true);
+            .then(() => {
                 props.getUser();
                 setLoginError(" ");
             })
@@ -107,11 +82,7 @@ let AccountScreen = (props) => {
             .auth()
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
-                var user = userCredential.user;
-                setUser(new User(user));
-                setUserSignedIn(true);
                 props.getUser();
-                setSignUpError(" ");
             })
             .catch((err) => {
                 setSignUpError(err.message);
@@ -127,30 +98,30 @@ let AccountScreen = (props) => {
 
         props.getUser();
 
-        setUser(props.user);
-
         setModalName(!modalName);
     };
     let setImageURL = async () => {
-        const userUpdate = firebase.auth().currentUser;
 
-        await userUpdate.updateProfile({
-            photoURL: imagePicked,
-        });
 
-        props.getUser();
-        setUser(props.user);
+        if (imagePicked !== "") {
+            const userUpdate = firebase.auth().currentUser;
+            await userUpdate.updateProfile({
+                photoURL: imagePicked,
+            });
+
+            props.getUser();
+        }
 
         setModalImage(!modalImage);
     };
 
+
     let logoutUser = async () => {
         await firebase.auth().signOut();
-        setUserSignedIn(false);
         await props.getUser();
     };
 
-    if (userSignedIn) {
+    if (props.user !== null) {
         return (
             <ImageBackground
                 style={{flexGrow: 1}}
@@ -158,30 +129,37 @@ let AccountScreen = (props) => {
             >
                 <SafeAreaView style={styles.containerImage}>
                     <TouchableOpacity
+                        style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}
                         onPress={() => {
                             setModalName(!modalName);
                         }}
                     >
-                        <Text style={{marginTop: 20}} category={"h3"}>
-                            {user.displayName === "" ? "Set Name " : user.displayName}
-                            <MaterialCommunityIcons size={20} name="pencil"/>{" "}
+                        <Text style={{
+                            marginTop: 20,
+                            backgroundColor: 'white',
+                            paddingVertical: 15,
+                            paddingHorizontal: 30,
+                            borderRadius: 50,
+                            color: '#000',
+                            borderWidth: 1,
+                            borderColor: '#FFC1D3'
+                        }} category={"h3"}>
+                            {props.user.displayName === "" ? "Set Name" : props.user.displayName}
+                            <MaterialCommunityIcons size={20}
+                                                    name="pencil"/>
                         </Text>
                     </TouchableOpacity>
                     <Text
                         style={{marginTop: 20, marginBottom: 5, color: "#000"}}
                         category="h6"
                     >
-                        {user.email}
+                        {props.user.email}
                     </Text>
                     <Image
                         resizeMethod={"resize"}
                         style={styles.avatar}
                         source={{
-                            uri: `${
-                                props.user.photoURL === "" || props.user.photoURL === null
-                                    ? "https://1fid.com/wp-content/uploads/2022/07/boy-anime-wallpaper-image-for-profile-pic-81.jpg"
-                                    : props.user.photoURL
-                            }`,
+                            uri: `${props.user.photoURL === "" ? "https://imageio.forbes.com/specials-images/imageserve/5ed6636cdd5d320006caf841/0x0.jpg?format=jpg&width=1200" : props.user.photoURL}`,
                         }}
                     />
                     <TouchableOpacity
@@ -194,10 +172,22 @@ let AccountScreen = (props) => {
                             width: 200,
                             marginVertical: 10,
                             textAlign: "center",
+                            justifyContent: 'center', alignItems: 'center', alignContent: 'center'
                         }}
+
                     >
                         <Text
-                            style={{textAlign: "center", padding: 12, fontWeight: "bold"}}
+                            style={{
+                                marginTop: 0,
+                                marginBottom: 30,
+                                backgroundColor: 'white',
+                                paddingVertical: 5,
+                                paddingHorizontal: 10,
+                                borderRadius: 50,
+                                color: '#000',
+                                borderWidth: 1,
+                                borderColor: '#FFC1D3'
+                            }}
                         >
                             Change Image <MaterialCommunityIcons size={20} name="pencil"/>
                         </Text>
@@ -361,6 +351,7 @@ let AccountScreen = (props) => {
                             <Text>{watchlistedAnimes}</Text>
                         </Card>
                     </View>
+
                 </View>
 
                 <SafeAreaView
@@ -409,6 +400,7 @@ let AccountScreen = (props) => {
                         <SignupPage
                             signUpError={signUpError}
                             SignUpWithEmailAndPassword={SignUpWithEmailAndPassword}
+                            getUser={props.getUser}
                         />
                     )}
                 />
@@ -417,6 +409,7 @@ let AccountScreen = (props) => {
                     name="Sign In"
                     children={() => (
                         <LoginPage
+                            getUser={props.getUser}
                             loginError={loginError}
                             LoginWithEmailandPassword={LoginWithEmailandPassword}
                         ></LoginPage>
@@ -445,7 +438,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 300,
         borderWidth: 3,
-        borderColor: "#586FB3",
+        borderColor: "#FFC1D3",
         width: 300,
         height: 300,
     },

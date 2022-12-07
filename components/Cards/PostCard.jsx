@@ -31,7 +31,7 @@ const PostCard = (props) => {
         </View>
         <View style={{ width: "75%" }}>
           <Text category={"h6"}>{props.item.PostTitle}</Text>
-          <Text style={{ marginVertical: 10 }}>{props.item.displayName}</Text>
+          <Text style={{ marginVertical: 10 }}>By: {props.item.displayName}</Text>
           <Text>{props.item.PostContent}</Text>
         </View>
       </View>
